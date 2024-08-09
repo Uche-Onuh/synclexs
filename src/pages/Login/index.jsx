@@ -4,7 +4,7 @@ import { Helmet } from "../../components";
 const Login = () => {
   return (
     <Helmet title="Login">
-      <h1>This is me</h1>
+      <h1>This is</h1>
     </Helmet>
   );
 };
