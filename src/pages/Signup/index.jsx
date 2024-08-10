@@ -3,7 +3,7 @@ import { Helmet } from "../../components";
 import { Link } from "react-router-dom";
 import { blob } from "../../assets";
 import { toast } from "react-toastify";
-
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 
 const Signup = () => {
   // State for form values and errors
@@ -15,6 +15,7 @@ const Signup = () => {
     confPassword: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
 
   // Handle input change and remove error
@@ -65,6 +66,10 @@ const Signup = () => {
 
     // Return whether the form is valid
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleTogglePassword = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   // Handle form submission
@@ -161,12 +166,18 @@ const Signup = () => {
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 value={formValues.password}
                 onChange={handleChange}
                 className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
               />
+              <div
+                className="absolute right-4 top-[50%] translate-x-[-50%] translate-y-[-50%] cursor-pointer"
+                onClick={handleTogglePassword}
+              >
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </div>
               {errors.password && (
                 <span className="text-red-500 text-sm font-semibold">
                   {errors.password}
@@ -182,12 +193,18 @@ const Signup = () => {
                 Confirm Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="confPassword"
                 value={formValues.confPassword}
                 onChange={handleChange}
                 className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
               />
+              <div
+                className="absolute right-4 top-[50%] translate-x-[-50%] translate-y-[-50%] cursor-pointer"
+                onClick={handleTogglePassword}
+              >
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </div>
               {errors.confPassword && (
                 <span className="text-red-500 text-sm font-semibold">
                   {errors.confPassword}

@@ -3,6 +3,7 @@ import { Helmet } from "../../components";
 import { Link } from "react-router-dom";
 import { blob } from "../../assets";
 import { toast } from "react-toastify";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 
 const Login = () => {
   // State for form values and errors
@@ -11,6 +12,7 @@ const Login = () => {
     password: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
 
   // Handle input change and remove error
@@ -47,6 +49,10 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleTogglePassword = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,7 +71,7 @@ const Login = () => {
     <Helmet title="Login">
       <div className="flex justify-start items-center h-[100vh] w-full">
         <div className="bg-alternate w-[30%] h-full"></div>
-        <div className="rounded-l-[30px] w-[70%] p-[100px]  bg-cover bg-center  h-full">
+        <div className="rounded-l-[30px] w-[70%] p-[100px] bg-loginbg  bg-cover bg-center  h-full">
           <h1 className="leading-[72px] font-bold text-[48px]">Log in</h1>
 
           <form className="mt-[100px] mb-[50px]" onSubmit={handleSubmit}>
@@ -97,12 +103,18 @@ const Login = () => {
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 value={formValues.password}
                 onChange={handleChange}
                 className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
               />
+              <div
+                className="absolute right-4 top-[50%] translate-x-[-50%] translate-y-[-50%] cursor-pointer"
+                onClick={handleTogglePassword}
+              >
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </div>
               {errors.password && (
                 <span className="text-red-500 text-sm font-semibold">
                   {errors.password}
