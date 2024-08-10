@@ -13,6 +13,10 @@ module.exports = {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
       },
+      backgroundImage: {
+        loginbg: "url('/src/assets/loginbg.png')",
+        signbg: "url('/src/assets/signbg.png')",
+      },
     },
     screens: {
       xs: "480px",
