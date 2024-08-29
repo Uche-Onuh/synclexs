@@ -5,12 +5,15 @@ import {
   ForgortPassword,
   ResetPassword,
   VerifyEmail,
+  Homepage
 } from "../pages";
 import { Routes, Route } from "react-router-dom";
 
 const Routers = () => {
   return (
     <Routes>
+      <Route path="/" index element={<Homepage />} />
+
       <Route path="/*">
         <Route path="user/login" element={<Login />} />
         <Route path="user/signup" element={<Signup />} />

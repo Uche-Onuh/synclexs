@@ -9,7 +9,9 @@ const Layout = () => {
   const location = useLocation();
   return (
     <>
-      <nav>{location.pathname.startsWith("/user") ? "" : <Navbar />}</nav>
+      <nav className="border-b-2 border-black">
+        {location.pathname.startsWith("/user") ? "" : <Navbar />}
+      </nav>
       <div>
         <Routers />
       </div>

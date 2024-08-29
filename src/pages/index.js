@@ -4,4 +4,6 @@ import ForgortPassword from "./Login/ForgortPassword";
 import ResetPassword from "./Login/ResetPassword";
 import VerifyEmail from "./Signup/VerifyEmail";
 
-export { Login, Signup, ForgortPassword, ResetPassword, VerifyEmail };
+import Homepage from "./Homepage";
+
+export { Login, Signup, ForgortPassword, ResetPassword, VerifyEmail, Homepage };

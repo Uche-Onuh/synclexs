@@ -8,7 +8,7 @@ module.exports = {
         primary: "#00DDFF",
         secondary: "#F6EDDF",
         tertiary: "#000C0E",
-        alternate: "#05363D",
+        alternate: "#003574CC",
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
@@ -16,6 +16,7 @@ module.exports = {
       backgroundImage: {
         loginbg: "url('/src/assets/loginbg.png')",
         signbg: "url('/src/assets/signbg.png')",
+        herobg: "url('/src/assets/herobg.png')",
       },
     },
     screens: {
