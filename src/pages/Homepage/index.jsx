@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Cards, Helmet, Steps } from "../../components";
-import { cards, badges, partners, steps } from "../../constants";
-import { aboutimg } from "../../assets";
+import { cards, badges, partners, steps, faqs } from "../../constants";
+import { aboutimg, faq } from "../../assets";
 import { Link } from "react-router-dom";
+import { IoChevronDown } from "react-icons/io5";
 
 const Homepage = () => {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const handleToggleAnswer = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
     <Helmet title="Home">
       <section className="w-full h-[75vh] bg-herobg bg-cover bg-no-repeat bg-center relative">
@@ -166,6 +173,53 @@ const Homepage = () => {
               textCol={step.textCol}
             />
           ))}
+        </div>
+      </section>
+
+      <section className="w-[90%] h-auto mx-auto mt-16">
+        <div className="w-[90%] text-black mx-auto text-center">
+          <h1 className="font-bold text-[48px] leading-[62.5px] mb-5">
+            Frequently Asked Questions
+          </h1>
+          <p className="font-normal text-[16px] leading-[22px] mb-20">
+            Here are some questions that have been frequently asked.
+          </p>
+        </div>
+        <div className="flex justify-center align-middle">
+          <div className="w-1/2">
+            <img src={faq} alt="" className="w-full object-contain"/>
+          </div>
+          <div className="w-[50%] text-black mx-auto px-6">
+            {faqs.map((faq, i) => (
+              <div className="p-[40px] rounded-[8px] bg-grey mb-3" key={faq.id}>
+                <div
+                  className="flex justify-between items-center cursor-pointer "
+                  onClick={() => handleToggleAnswer(i)}
+                >
+                  <p className="font-bold text-[16px] leading-[22px]">
+                    {i + 1}. {faq.question}
+                  </p>
+
+                  <div
+                    className={`transform transition-transform bg-primary p-[2px] rounded-full ${
+                      openIndex === i ? "rotate-180" : ""
+                    }`}
+                  >
+                    <IoChevronDown />
+                  </div>
+                </div>
+                <div
+                  className={`overflow-hidden transition-max-height duration-300 ${
+                    openIndex === i ? "max-h-[200px]" : "max-h-0"
+                  }`}
+                >
+                  <div className="mt-4 text-[14px]  text-tertiary">
+                    <p className="font-medium">{faq.reply}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </Helmet>
