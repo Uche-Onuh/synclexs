@@ -1,8 +1,9 @@
 import React from "react";
 
-const Cards = ({ bg, icon, text, title }) => {
+const Cards = ({ id, bg, icon, text, title }) => {
   return (
     <div
+      key={id}
       className={`w-[30%] h-auto rounded-[20px] py-14 px-14 ${bg} flex flex-col items-center justify-center text-white hover:scale-105 transition ease-in-out duration-700`}
     >
       <div className="text-[45px] mb-2">{icon}</div>
