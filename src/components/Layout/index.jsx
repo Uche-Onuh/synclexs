@@ -15,7 +15,9 @@ const Layout = () => {
       <div>
         <Routers />
       </div>
-      <footer>{location.pathname.startsWith("/user") ? "" : <Footer />}</footer>
+      <footer className="bg-alternate w-full h-auto">
+        {location.pathname.startsWith("/user") ? "" : <Footer />}
+      </footer>
     </>
   );
 };

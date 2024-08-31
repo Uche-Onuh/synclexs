@@ -176,7 +176,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      <section className="w-[90%] h-auto mx-auto mt-16">
+      <section className="w-[90%] h-auto mx-auto my-16">
         <div className="w-[90%] text-black mx-auto text-center">
           <h1 className="font-bold text-[48px] leading-[62.5px] mb-5">
             Frequently Asked Questions
