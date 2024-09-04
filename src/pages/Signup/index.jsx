@@ -4,6 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { blob } from "../../assets";
 import { toast } from "react-toastify";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
+import axios from "../../api/axios";
+
+const REGISTER_URL = "api/auth/users";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -74,22 +77,44 @@ const Signup = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    const { email, firstName, lastName, password, confPassword } = formValues;
     e.preventDefault();
 
     if (validate()) {
-      // If form is valid, you can proceed with form submission
-      toast.success("Form submitted successfully");
-      setTimeout(() => {
-        navigate("/user/verify-email");
-      }, 3000);
-      console.log("Form submitted successfully:", formValues);
+      try {
+        // If form is valid, proceed with form submission
+        await axios.post(
+          REGISTER_URL,
+          JSON.stringify({
+            email,
+            first_name: firstName,
+            last_name: lastName,
+            password,
+            password2: confPassword,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
+        toast.success("Form submitted successfully");
+        setTimeout(() => {
+          navigate("/user/verify-email");
+        }, 3000);
+      } catch (error) {
+        // Error handling
+        toast.error(
+          error.response?.data?.message ||
+            "Something went wrong. Please try again."
+        );
+      }
     } else {
       toast.error("Validation failed. Please fix the errors and try again.");
-      console.log("Validation failed. Please fix the errors and try again.");
     }
   };
-
   return (
     <Helmet title="Signup">
       <div className="flex justify-start items-center h-[100vh] w-full">
