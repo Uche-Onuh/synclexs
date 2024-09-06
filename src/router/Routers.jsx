@@ -15,11 +15,11 @@ const Routers = () => {
       <Route path="/" index element={<Homepage />} />
 
       <Route path="/*">
-        <Route path="user/login" element={<Login />} />
-        <Route path="user/signup" element={<Signup />} />
-        <Route path="user/forgot-password" element={<ForgortPassword />} />
-        <Route path="user/reset-password" element={<ResetPassword />} />
-        <Route path="user/verify-email/:email" element={<VerifyEmail />} />
+        <Route path="auth/login" element={<Login />} />
+        <Route path="auth/signup" element={<Signup />} />
+        <Route path="auth/forgot-password" element={<ForgortPassword />} />
+        <Route path="auth/reset-password" element={<ResetPassword />} />
+        <Route path="auth/verify-email/:email" element={<VerifyEmail />} />
       </Route>
     </Routes>
   );

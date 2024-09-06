@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Helmet } from "../../components";
 import { Link, useNavigate } from "react-router-dom";
-import { blob } from "../../assets";
+import { blob, logoblack } from "../../assets";
 import { toast } from "react-toastify";
 
 const ForgortPassword = () => {
@@ -52,7 +52,7 @@ const ForgortPassword = () => {
       );
 
       setTimeout(() => {
-        navigate("/user/reset-password");
+        navigate("/auth/reset-password");
       }, 3000);
       console.log("Form submitted successfully:", formValues);
     } else {
@@ -64,7 +64,13 @@ const ForgortPassword = () => {
   return (
     <Helmet title="Forgot Password">
       <div className="flex justify-start items-center h-[100vh] w-full">
-        <div className="bg-alternate w-[30%] h-full"></div>
+        <div className="bg-alternate w-[30%] h-full relative">
+          <div className="absolute top-[10%] left-[50%] translate-x-[-50%] w-[200px]">
+            <Link to="/">
+              <img src={logoblack} alt="logo" className="w-full" />
+            </Link>
+          </div>
+        </div>
         <div className="rounded-l-[30px] w-[70%] p-[100px] bg-loginbg  bg-cover bg-center  h-full">
           <h1 className="leading-[72px] font-bold text-[48px]">
             {" "}
@@ -107,7 +113,7 @@ const ForgortPassword = () => {
             <h1 className="font-medium text-[20px] leading-[30px]">
               Go back?{" "}
               <Link
-                to="/user/login"
+                to="/auth/login"
                 className="text-primary hover:text-tertiary"
               >
                 Login here

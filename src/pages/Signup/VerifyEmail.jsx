@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Helmet } from "../../components";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { blob } from "../../assets";
+import { blob, logoblack } from "../../assets";
 import { toast } from "react-toastify";
 import axios from "../../api/axios"; // Ensure axios is imported
 import { maskEmail } from "../../utilityFunctions/functions";
@@ -13,6 +13,7 @@ const VerifyEmail = () => {
   const { email } = useParams(); // Extract email using useParams
   const [codes, setCodes] = useState(["", "", "", ""]);
   const [errors, setErrors] = useState({});
+  const [isLoading, setisLoading] = useState(false);
 
   // Handle input change and remove error
   const handleChange = (index, e) => {
@@ -68,6 +69,8 @@ const VerifyEmail = () => {
 
     if (validate()) {
       const pin = codes.join(""); // Combine codes into a single PIN
+      setisLoading(true);
+
       try {
         // If form is valid, proceed with form submission
         await axios.post(
@@ -83,16 +86,18 @@ const VerifyEmail = () => {
             withCredentials: true,
           }
         );
+        setisLoading(false);
 
         toast.success("Verification successful");
 
         setTimeout(() => {
-          navigate("/user/signup"); // Redirect to a different page after verification
+          navigate("/auth/login"); // Redirect to a different page after verification
         }, 3000);
 
         console.log("Form submitted successfully:", pin);
       } catch (error) {
         // Error handling
+        setisLoading(false);
         toast.error(
           error.response?.data?.message ||
             "Something went wrong. Please try again."
@@ -108,7 +113,13 @@ const VerifyEmail = () => {
   return (
     <Helmet title="Verify Email">
       <div className="flex justify-start items-center h-[100vh] w-full">
-        <div className="bg-alternate w-[30%] h-full overflow-visible"></div>
+        <div className="bg-alternate w-[30%] h-full overflow-visible relative">
+          <div className="absolute top-[10%] left-[50%] translate-x-[-50%] w-[200px]">
+            <Link to="/">
+              <img src={logoblack} alt="logo" className="w-full" />
+            </Link>
+          </div>
+        </div>
         <div className="rounded-l-[30px] w-[70%] p-[100px] h-full">
           <h1 className="leading-[72px] font-bold text-[48px]">Verify Email</h1>
 
@@ -146,6 +157,7 @@ const VerifyEmail = () => {
             </div>
             <div className="flex flex-col gap-1">
               <button
+                disabled={isLoading}
                 type="submit"
                 className="bg-[#003574] py-2 rounded-[10px] outline-none border-none hover:bg-primary text-secondary hover:text-tertiary font-bold text-[24px] transition  ease-in-out duration-700"
               >

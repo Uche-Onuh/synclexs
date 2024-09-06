@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Helmet } from "../../components";
 import { Link, useNavigate } from "react-router-dom";
-import { blob } from "../../assets";
+import { blob, logoblack } from "../../assets";
 import { toast } from "react-toastify";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "../../api/axios";
@@ -21,6 +21,7 @@ const Signup = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isLoading, setisLoading] = useState(false);
 
   // Handle input change and remove error
   const handleChange = (e) => {
@@ -82,6 +83,7 @@ const Signup = () => {
     e.preventDefault();
 
     if (validate()) {
+      setisLoading(true);
       try {
         // If form is valid, proceed with form submission
         await axios.post(
@@ -100,12 +102,14 @@ const Signup = () => {
             withCredentials: true,
           }
         );
-        toast.success("Form submitted successfully");
+        toast.success("Account created successfully");
+        setisLoading(false);
         setTimeout(() => {
-           navigate(`/user/verify-email/${encodeURIComponent(email)}`);
+          navigate(`/auth/verify-email/${encodeURIComponent(email)}`);
         }, 3000);
       } catch (error) {
         // Error handling
+        setisLoading(false);
         toast.error(
           error.response?.data?.message ||
             "Something went wrong. Please try again."
@@ -118,7 +122,13 @@ const Signup = () => {
   return (
     <Helmet title="Signup">
       <div className="flex justify-start items-center h-[100vh] w-full">
-        <div className="bg-alternate w-[30%] h-full overflow-visible"></div>
+        <div className="bg-alternate w-[30%] h-full overflow-visible relative">
+          <div className="absolute top-[10%] left-[50%] translate-x-[-50%] w-[200px]">
+            <Link to="/">
+              <img src={logoblack} alt="logo" className="w-full" />
+            </Link>
+          </div>
+        </div>
         <div className="rounded-l-[30px] w-[70%] p-[100px] h-full">
           <h1 className="leading-[72px] font-bold text-[48px]">
             Create Account
@@ -243,6 +253,7 @@ const Signup = () => {
 
             <div className="flex flex-col gap-1">
               <button
+                disabled={isLoading === true}
                 type="submit"
                 className="bg-[#003574] py-2 rounded-[10px] outline-none border-none hover:bg-primary text-secondary hover:text-tertiary font-bold text-[24px] transition  ease-in-out duration-700"
               >
@@ -255,7 +266,7 @@ const Signup = () => {
             <h1 className="font-medium text-[20px] leading-[30px]">
               Already have an account?{" "}
               <Link
-                to="/user/login"
+                to="/auth/login"
                 className="text-primary hover:text-tertiary"
               >
                 Login here

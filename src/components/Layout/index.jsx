@@ -10,13 +10,13 @@ const Layout = () => {
   return (
     <>
       <nav className="border-b-2 border-black">
-        {location.pathname.startsWith("/user") ? "" : <Navbar />}
+        {location.pathname.startsWith("/auth") ? "" : <Navbar />}
       </nav>
       <div>
         <Routers />
       </div>
       <footer className="bg-alternate w-full h-auto">
-        {location.pathname.startsWith("/user") ? "" : <Footer />}
+        {location.pathname.startsWith("/auth") ? "" : <Footer />}
       </footer>
     </>
   );

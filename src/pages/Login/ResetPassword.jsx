@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Helmet } from "../../components";
-import { blob } from "../../assets";
+import { blob, logoblack } from "../../assets";
 import { toast } from "react-toastify";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 
@@ -70,7 +70,13 @@ const ResetPassword = () => {
   return (
     <Helmet title="Reset Password">
       <div className="flex justify-start items-center h-[100vh] w-full">
-        <div className="bg-alternate w-[30%] h-full overflow-visible"></div>
+        <div className="bg-alternate w-[30%] h-full overflow-visible relative">
+          <div className="absolute top-[10%] left-[50%] translate-x-[-50%] w-[200px]">
+            <Link to="/">
+              <img src={logoblack} alt="logo" className="w-full" />
+            </Link>
+          </div>
+        </div>
         <div className="rounded-l-[30px] w-[70%] p-[100px] bg-loginbg  bg-cover bg-center  h-full">
           <h1 className="leading-[72px] font-bold text-[48px]">
             Reset Your Password

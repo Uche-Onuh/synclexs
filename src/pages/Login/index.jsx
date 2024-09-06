@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import { Helmet } from "../../components";
-import { Link } from "react-router-dom";
-import { blob } from "../../assets";
+import { Link, useNavigate } from "react-router-dom";
+import { blob, logoblack } from "../../assets";
 import { toast } from "react-toastify";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
+import axios from "../../api/axios"; // Ensure axios is imported
+
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/slice/userSlice";
+
+const LOGIN_URL = "auth/login/";
 
 const Login = () => {
+  const navigate = useNavigate();
   // State for form values and errors
   const [formValues, setFormValues] = useState({
     email: "",
@@ -14,6 +21,8 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const dispatch = useDispatch();
 
   // Handle input change and remove error
   const handleChange = (e) => {
@@ -54,23 +63,58 @@ const Login = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validate()) {
-      // If form is valid, you can proceed with form submission
-      toast.success("Form submitted successfully");
-      console.log("Form submitted successfully:", formValues);
+      const { email, password } = formValues; // Destructure email and password here
+      try {
+        const response = await axios.post(
+          LOGIN_URL,
+          JSON.stringify({ email, password }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
+
+        const token = response.data.token;
+
+        dispatch(
+          login({
+            token,
+            isLoggedIn: true,
+          })
+        );
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+
+        toast.success("Login Successful");
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            "Something went wrong. Please try again."
+        );
+      }
     } else {
       toast.error("Validation failed. Please fix the errors and try again.");
-      console.log("Validation failed. Please fix the errors and try again.");
     }
   };
 
   return (
     <Helmet title="Login">
       <div className="flex justify-start items-center h-[100vh] w-full">
-        <div className="bg-alternate w-[30%] h-full"></div>
+        <div className="bg-alternate w-[30%] h-full relative">
+          <div className="absolute top-[10%] left-[50%] translate-x-[-50%] w-[200px]">
+            <Link to="/">
+              <img src={logoblack} alt="logo" className="w-full" />
+            </Link>
+          </div>
+        </div>
         <div className="rounded-l-[30px] w-[70%] p-[100px] bg-loginbg  bg-cover bg-center  h-full">
           <h1 className="leading-[72px] font-bold text-[48px]">Log in</h1>
 
@@ -124,7 +168,7 @@ const Login = () => {
 
             <div className="flex justify-end mb-6">
               <Link
-                to="/user/forgot-password"
+                to="/auth/forgot-password"
                 className="text-end font-medium text-[20px] leading-8 hover:text-primary"
               >
                 Forgot your password?
@@ -145,7 +189,7 @@ const Login = () => {
             <h1 className="font-medium text-[20px] leading-[30px]">
               New User?{" "}
               <Link
-                to="/user/signup"
+                to="/auth/signup"
                 className="text-primary hover:text-tertiary"
               >
                 Sign up

@@ -11,11 +11,7 @@ import { PiHandshakeThin } from "react-icons/pi";
 import { brand1, brand2, brand3 } from "../assets";
 
 export const navLinks = [
-  {
-    id: "home",
-    path: "/",
-    display: "Home",
-  },
+ 
   {
     id: "about",
     path: "about-us",
