@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Helmet } from "../../components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { blob } from "../../assets";
 import { toast } from "react-toastify";
 import axios from "../../api/axios"; // Ensure axios is imported
+import { maskEmail } from "../../utilityFunctions/functions";
 
 const VERIFY_EMAIL = "auth/verify-email/"; // Ideally, this URL should be managed via environment variables
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
+  const { email } = useParams(); // Extract email using useParams
   const [codes, setCodes] = useState(["", "", "", ""]);
   const [errors, setErrors] = useState({});
 
@@ -71,6 +73,7 @@ const VerifyEmail = () => {
         await axios.post(
           VERIFY_EMAIL,
           JSON.stringify({
+            email,
             code: pin,
           }),
           {
@@ -84,7 +87,7 @@ const VerifyEmail = () => {
         toast.success("Verification successful");
 
         setTimeout(() => {
-          navigate("/"); // Redirect to a different page after verification
+          navigate("/user/signup"); // Redirect to a different page after verification
         }, 3000);
 
         console.log("Form submitted successfully:", pin);
@@ -100,6 +103,8 @@ const VerifyEmail = () => {
     }
   };
 
+  const maskedEmail = maskEmail(email);
+
   return (
     <Helmet title="Verify Email">
       <div className="flex justify-start items-center h-[100vh] w-full">
@@ -110,7 +115,7 @@ const VerifyEmail = () => {
           <p className="font-medium text-[20px] leading-[30px] mt-5">
             We sent you a 4 digit code to verify your email address
             <br />
-            <span className="font-bold">(******@gmail.com).</span> <br />
+            <span className="font-bold">({maskedEmail}).</span> <br />
             Enter it in the field below
           </p>
 

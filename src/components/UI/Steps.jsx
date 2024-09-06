@@ -1,9 +1,8 @@
 import React from "react";
 
-const Steps = ({ id, head, title, text, icon, bg, textCol }) => {
+const Steps = ({ head, title, text, icon, bg, textCol }) => {
   return (
     <div
-      key={id}
       className={`${bg} py-20 px-10 rounded-2xl textCol relative text-center`}
     >
       <div className="absolute top-[-20%] left-[50%] translate-x-[-50%] translate-y-[20%] text-[60px] bg-alternate p-5 rounded-full text-white">

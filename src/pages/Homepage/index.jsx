@@ -34,11 +34,11 @@ const Homepage = () => {
       <section className="w-[90%] mx-auto flex mt-5 gap-7">
         {cards.map((card) => (
           <Cards
+            key={card.id}
             bg={card.bg}
             icon={<card.icon />}
             text={card.text}
             title={card.title}
-            id={card.id}
           />
         ))}
       </section>
@@ -164,7 +164,7 @@ const Homepage = () => {
         <div className="flex justify-between items-center mt-20">
           {steps.map((step) => (
             <Steps
-              id={step.id}
+              key={step.id}
               icon={<step.icon />}
               head={step.head}
               title={step.title}
@@ -187,7 +187,7 @@ const Homepage = () => {
         </div>
         <div className="flex justify-center align-middle">
           <div className="w-1/2">
-            <img src={faq} alt="" className="w-full object-contain"/>
+            <img src={faq} alt="" className="w-full object-contain" />
           </div>
           <div className="w-[50%] text-black mx-auto px-6">
             {faqs.map((faq, i) => (

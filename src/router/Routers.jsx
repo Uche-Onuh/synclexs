@@ -5,7 +5,7 @@ import {
   ForgortPassword,
   ResetPassword,
   VerifyEmail,
-  Homepage
+  Homepage,
 } from "../pages";
 import { Routes, Route } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const Routers = () => {
         <Route path="user/signup" element={<Signup />} />
         <Route path="user/forgot-password" element={<ForgortPassword />} />
         <Route path="user/reset-password" element={<ResetPassword />} />
-        <Route path="user/verify-email" element={<VerifyEmail />} />
+        <Route path="user/verify-email/:email" element={<VerifyEmail />} />
       </Route>
     </Routes>
   );

@@ -102,7 +102,7 @@ const Signup = () => {
         );
         toast.success("Form submitted successfully");
         setTimeout(() => {
-          navigate("/user/verify-email");
+           navigate(`/user/verify-email/${encodeURIComponent(email)}`);
         }, 3000);
       } catch (error) {
         // Error handling
