@@ -3,6 +3,9 @@ import { Helmet } from "../../components";
 import { Link, useNavigate } from "react-router-dom";
 import { blob } from "../../assets";
 import { toast } from "react-toastify";
+import axios from "../../api/axios"; // Ensure axios is imported
+
+const VERIFY_EMAIL = "auth/verify-email/"; // Ideally, this URL should be managed via environment variables
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
@@ -18,6 +21,9 @@ const VerifyEmail = () => {
       const newCodes = [...codes];
       newCodes[index] = value;
       setCodes(newCodes);
+
+      // Clear the error for the specific input if a digit is entered
+      setErrors((prevErrors) => ({ ...prevErrors, [`code-${index}`]: "" }));
 
       // Move focus to the next input if the current input is filled
       if (value.length === 1 && index < 3) {
@@ -55,23 +61,42 @@ const VerifyEmail = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validate()) {
       const pin = codes.join(""); // Combine codes into a single PIN
+      try {
+        // If form is valid, proceed with form submission
+        await axios.post(
+          VERIFY_EMAIL,
+          JSON.stringify({
+            code: pin,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
 
-      // You can now proceed with form submission, e.g., send the PIN to the server
-      toast.success("Verification successful");
+        toast.success("Verification successful");
 
-      setTimeout(() => {
-        navigate("/"); // Redirect to a different page after verification
-      }, 3000);
+        setTimeout(() => {
+          navigate("/"); // Redirect to a different page after verification
+        }, 3000);
 
-      console.log("Form submitted successfully:", pin);
+        console.log("Form submitted successfully:", pin);
+      } catch (error) {
+        // Error handling
+        toast.error(
+          error.response?.data?.message ||
+            "Something went wrong. Please try again."
+        );
+      }
     } else {
       toast.error("Validation failed. Please fix the errors and try again.");
-      console.log("Validation failed. Please fix the errors and try again.");
     }
   };
 
@@ -86,25 +111,32 @@ const VerifyEmail = () => {
             We sent you a 4 digit code to verify your email address
             <br />
             <span className="font-bold">(******@gmail.com).</span> <br />
-            Enter in the field below
+            Enter it in the field below
           </p>
 
           <form className="my-[50px]" onSubmit={handleSubmit}>
             <div className="flex justify-start items-center gap-[30px] mt-5 mb-20">
               {codes.map((code, index) => (
-                <input
-                  key={index}
-                  id={`code-input-${index}`}
-                  type="text"
-                  maxLength={1}
-                  value={code}
-                  onChange={(e) => handleChange(index, e)}
-                  className={`w-[80px] h-[87px] text-center text-[25px] border-[3px] ${
-                    errors[`code-${index}`]
-                      ? "border-red-500"
-                      : "border-tertiary"
-                  } focus:outline-none focus:border-primary rounded-xl`}
-                />
+                <div key={index} className="flex flex-col items-center">
+                  <input
+                    id={`code-input-${index}`}
+                    type="text"
+                    maxLength={1}
+                    value={code}
+                    onChange={(e) => handleChange(index, e)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    className={`w-[80px] h-[87px] text-center text-[25px] border-[3px] ${
+                      errors[`code-${index}`]
+                        ? "border-red-500"
+                        : "border-tertiary"
+                    } focus:outline-none focus:border-primary rounded-xl`}
+                  />
+                  {errors[`code-${index}`] && (
+                    <span className="text-red-500 text-sm mt-1">
+                      {errors[`code-${index}`]}
+                    </span>
+                  )}
+                </div>
               ))}
             </div>
             <div className="flex flex-col gap-1">
@@ -120,7 +152,7 @@ const VerifyEmail = () => {
           <div>
             <h1 className="font-medium text-[20px] leading-[30px]">
               Didn’t get a code?{" "}
-              <Link className="text-primary hover:text-tertiary ">
+              <Link to="#" className="text-primary hover:text-tertiary ">
                 Resend code
               </Link>
             </h1>

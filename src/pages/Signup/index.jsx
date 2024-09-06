@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "../../api/axios";
 
-const REGISTER_URL = "api/auth/users";
+const REGISTER_URL = "auth/users/";
 
 const Signup = () => {
   const navigate = useNavigate();
