@@ -78,7 +78,7 @@ const Navbar = () => {
         </div>
       ) : (
         <div className="bg-alternate py-2 px-4 rounded-l font-normal text-[15px] leading-[22px] text-white hover:bg-primary hover:text-[#000] ">
-          <NavLink to="auth/signup">Sign up</NavLink>
+          <NavLink to="auth/login">Login</NavLink>
         </div>
       )}
     </div>
