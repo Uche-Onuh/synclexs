@@ -112,15 +112,15 @@ const VerifyEmail = () => {
 
   return (
     <Helmet title="Verify Email">
-      <div className="flex justify-start items-center h-[100vh] w-full">
-        <div className="bg-alternate w-[30%] h-full overflow-visible relative">
+      <div className="flex flex-col md:flex-row justify-start items-center h-[100vh] w-full">
+        <div className="bg-alternate w-full md:w-[30%] h-full relative hidden md:block">
           <div className="absolute top-[10%] left-[50%] translate-x-[-50%] w-[200px]">
             <Link to="/">
               <img src={logoblack} alt="logo" className="w-full" />
             </Link>
           </div>
         </div>
-        <div className="rounded-l-[30px] w-[70%] p-[100px] h-full">
+        <div className="rounded-l-[30px] w-full md:w-[70%] p-[30px] md:p-[100px] h-full">
           <h1 className="leading-[72px] font-bold text-[48px]">Verify Email</h1>
 
           <p className="font-medium text-[20px] leading-[30px] mt-5">
@@ -176,11 +176,13 @@ const VerifyEmail = () => {
           </div>
 
           <div className="absolute right-20 bottom-10">
-            <img
-              src={blob}
-              alt="decorative blob"
-              className="w-[38px] h-[34px]"
-            />
+            <Link to="/">
+              <img
+                src={blob}
+                alt="decorative blob"
+                className="w-[38px] h-[34px]"
+              />
+            </Link>
           </div>
         </div>
       </div>

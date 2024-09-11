@@ -9,9 +9,8 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
     <div className="text-white py-2 w-[90%] mx-auto">
-      <div className="flex justify-between items-center ">
+      <div className="flex flex-col md:flex-row justify-between items-center ">
         <h1> Copyright © {currentYear} Synclexs. All rights reserved.</h1>
-
         <div className="flex justify-center items-center gap-5">
           <div className="text-white text-[20px]">
             <p>Follow:</p>

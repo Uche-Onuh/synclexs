@@ -107,15 +107,16 @@ const Login = () => {
 
   return (
     <Helmet title="Login">
-      <div className="flex justify-start items-center h-[100vh] w-full">
-        <div className="bg-alternate w-[30%] h-full relative">
+      <div className="flex flex-col md:flex-row justify-start items-center h-[100vh] w-full">
+        <div className="bg-alternate w-full md:w-[30%]  h-full relative hidden md:block">
           <div className="absolute top-[10%] left-[50%] translate-x-[-50%] w-[200px]">
             <Link to="/">
               <img src={logoblack} alt="logo" className="w-full" />
             </Link>
           </div>
         </div>
-        <div className="rounded-l-[30px] w-[70%] p-[100px] bg-loginbg  bg-cover bg-center  h-full">
+
+        <div className="rounded-l-[30px] w-full md:w-[70%] p-[30px] md:p-[100px] h-full bg-loginbg bg-cover bg-center">
           <h1 className="leading-[72px] font-bold text-[48px]">Log in</h1>
 
           <form className="mt-[100px] mb-[50px]" onSubmit={handleSubmit}>
@@ -198,11 +199,13 @@ const Login = () => {
           </div>
 
           <div className="absolute right-20 bottom-10">
-            <img
-              src={blob}
-              alt="decorative blob"
-              className="w-[38px] h-[34px]"
-            />
+            <Link to="/">
+              <img
+                src={blob}
+                alt="decorative blob"
+                className="w-[38px] h-[34px]"
+              />
+            </Link>
           </div>
         </div>
       </div>

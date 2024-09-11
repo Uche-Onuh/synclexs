@@ -4,15 +4,21 @@ import { navLinks } from "../../constants";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/slice/userSlice"; // Import your logout action
+import { CiMenuBurger } from "react-icons/ci";
+import { IoMdClose } from "react-icons/io";
 
 const Navbar = () => {
   // Fetching isLoggedIn state from Redux store
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn); // Access isLoggedIn directly from the Redux store
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleToggle = () => {
     setToggle((prev) => !prev);
+  };
+  const handleOpen = () => {
+    setOpen((prev) => !prev);
   };
 
   const handleLogout = () => {
@@ -27,7 +33,7 @@ const Navbar = () => {
         </NavLink>
       </div>
 
-      <ul className="flex items-center justify-center gap-20">
+      <ul className="hidden md:flex items-center justify-center gap-20">
         {navLinks.map((link) => (
           <li
             key={link.id}
@@ -38,49 +44,85 @@ const Navbar = () => {
         ))}
       </ul>
 
-      {isLoggedIn ? (
-        <div
-          className="w-[43px] h-[49px] cursor-pointer relative rounded-full"
-          onClick={handleToggle}
-        >
-          <img src={user} alt="user" className="w-full h-full" />
+      <div className="flex items-center justify-center gap-2">
+        {isLoggedIn ? (
           <div
-            className={`${
-              toggle
-                ? "scale-100 opacity-100"
-                : "scale-0 opacity-0 pointer-events-none"
-            } transform transition-transform duration-300 ease-in-out absolute top-[100%] bg-hover   w-[250px] left-[-400%] z-10 origin-top bg-white`}
-            aria-expanded={toggle}
-            aria-controls="user-menu"
+            className="w-[43px] h-[49px] cursor-pointer relative rounded-full"
+            onClick={handleToggle}
           >
-            <ul className="uppercase">
-              <li
-                className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]"
-                onClick={handleToggle}
-              >
-                <Link to="user/profile"> profile</Link>
-              </li>
-              <li className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]">
-                <Link to="user/deals" onClick={handleToggle}>
-                  deals
-                </Link>
-              </li>
-              <li className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]">
-                <Link to="user/settings" onClick={handleToggle}>
-                  settings
-                </Link>
-              </li>
-              <li className=" px-4 py-4 text-[15px] font-medium leading-[22.5px]">
-                <div onClick={handleLogout}>log out</div>
-              </li>
-            </ul>
+            <img src={user} alt="user" className="w-full h-full" />
+            <div
+              className={`${
+                toggle
+                  ? "scale-100 opacity-100"
+                  : "scale-0 opacity-0 pointer-events-none"
+              } transform transition-transform duration-300 ease-in-out absolute top-[100%] bg-hover   w-[250px] left-[-400%] z-10 origin-top bg-white`}
+              aria-expanded={toggle}
+              aria-controls="user-menu"
+            >
+              <ul className="uppercase">
+                <li
+                  className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]"
+                  onClick={handleToggle}
+                >
+                  <Link to="user/profile"> profile</Link>
+                </li>
+                <li className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]">
+                  <Link to="user/deals" onClick={handleToggle}>
+                    deals
+                  </Link>
+                </li>
+                <li className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]">
+                  <Link to="user/settings" onClick={handleToggle}>
+                    settings
+                  </Link>
+                </li>
+                <li className=" px-4 py-4 text-[15px] font-medium leading-[22.5px]">
+                  <div onClick={handleLogout}>log out</div>
+                </li>
+              </ul>
+            </div>
           </div>
+        ) : (
+          <div className="bg-alternate py-2 px-4 rounded-l font-normal text-[15px] leading-[22px] text-white hover:bg-primary hover:text-[#000] ">
+            <NavLink to="auth/login">Login</NavLink>
+          </div>
+        )}
+        <div
+          className={`block md:hidden cursor-pointer hover:text-primary relative`}
+          onClick={handleOpen}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+        >
+          {open ? (
+            <IoMdClose size={32} color={"red"} />
+          ) : (
+            <CiMenuBurger size={32} color={"#003574CC"} />
+          )}
         </div>
-      ) : (
-        <div className="bg-alternate py-2 px-4 rounded-l font-normal text-[15px] leading-[22px] text-white hover:bg-primary hover:text-[#000] ">
-          <NavLink to="auth/login">Login</NavLink>
+        {/* Mobile Menu */}
+        <div
+          id="mobile-menu"
+          className={`${
+            open
+              ? "scale-100 opacity-100"
+              : "scale-0 opacity-0 pointer-events-none"
+          } transform transition-transform duration-300 ease-in-out absolute top-[10%] bg-hover w-[50%] left-[50%] z-10 origin-top bg-alternate`}
+        >
+          <ul className="flex flex-col items-start justify-start gap-8 md:gap-20 py-4">
+            {navLinks.map((link) => (
+              <li
+                key={link.id}
+                className=" px-4 text-[14px] leading-8 uppercase font-bold text-primary"
+              >
+                <NavLink to={link.path} onClick={handleOpen}>
+                  {link.display}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
         </div>
-      )}
+      </div>
     </div>
   );
 };
