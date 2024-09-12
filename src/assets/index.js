@@ -7,5 +7,17 @@ import brand1 from "./brand1.png";
 import brand2 from "./brand2.png";
 import brand3 from "./brand3.png";
 import faq from "./faq.jpg";
+import profile from "./profile.jpg";
 
-export { logo, blob, logoblack, user, aboutimg, brand1, brand2, brand3, faq };
+export {
+  logo,
+  blob,
+  logoblack,
+  user,
+  aboutimg,
+  brand1,
+  brand2,
+  brand3,
+  faq,
+  profile,
+};

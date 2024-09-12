@@ -141,7 +141,7 @@ const VerifyEmail = () => {
                     value={code}
                     onChange={(e) => handleChange(index, e)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    className={`w-[80px] h-[87px] text-center text-[25px] border-[3px] ${
+                    className={`w-[60px] md:w-[80px] h-[60px] md:h-[87px] text-center text-[25px] border-[3px] ${
                       errors[`code-${index}`]
                         ? "border-red-500"
                         : "border-tertiary"
@@ -174,16 +174,15 @@ const VerifyEmail = () => {
               </Link>
             </h1>
           </div>
-
-          <div className="absolute right-20 bottom-10">
-            <Link to="/">
-              <img
-                src={blob}
-                alt="decorative blob"
-                className="w-[38px] h-[34px]"
-              />
-            </Link>
-          </div>
+        </div>
+        <div className="absolute right-20 bottom-10">
+          <Link to="/">
+            <img
+              src={blob}
+              alt="decorative blob"
+              className="w-[38px] h-[34px]"
+            />
+          </Link>
         </div>
       </div>
     </Helmet>

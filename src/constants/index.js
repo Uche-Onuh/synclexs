@@ -11,7 +11,6 @@ import { PiHandshakeThin } from "react-icons/pi";
 import { brand1, brand2, brand3 } from "../assets";
 
 export const navLinks = [
- 
   {
     id: "about",
     path: "about-us",
@@ -154,4 +153,10 @@ export const faqs = [
     question: "What services does TanahAir Offer?",
     reply: "This is a default reply",
   },
+];
+
+export const deals = [
+  { id: "1590876546", location: "Alimosho" },
+  { id: "1590876547", location: "Kosofe" },
+  { id: "1590876548", location: "Lagos Island" },
 ];

@@ -6,6 +6,9 @@ import {
   ResetPassword,
   VerifyEmail,
   Homepage,
+  Settings,
+  Deals,
+  DealsDetail,
 } from "../pages";
 import { Routes, Route } from "react-router-dom";
 
@@ -13,6 +16,10 @@ const Routers = () => {
   return (
     <Routes>
       <Route path="/" index element={<Homepage />} />
+
+      <Route path="user/settings" element={<Settings />} />
+      <Route path="user/deals" element={<Deals />} />
+      <Route path="user/deals/:id" element={<DealsDetail />} />
 
       <Route path="/*">
         <Route path="auth/login" element={<Login />} />

@@ -61,24 +61,24 @@ const Navbar = () => {
               aria-controls="user-menu"
             >
               <ul className="uppercase">
+                {[
+                  { path: "user/profile", label: "profile" },
+                  { path: "user/deals", label: "deals" },
+                  { path: "user/settings", label: "settings" },
+                ].map(({ path, label }) => (
+                  <li
+                    key={path}
+                    className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]"
+                    onClick={handleToggle}
+                  >
+                    <Link to={path}>{label}</Link>
+                  </li>
+                ))}
                 <li
-                  className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]"
-                  onClick={handleToggle}
+                  className="px-4 py-4 text-[15px] font-medium leading-[22.5px]"
+                  onClick={handleLogout}
                 >
-                  <Link to="user/profile"> profile</Link>
-                </li>
-                <li className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]">
-                  <Link to="user/deals" onClick={handleToggle}>
-                    deals
-                  </Link>
-                </li>
-                <li className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]">
-                  <Link to="user/settings" onClick={handleToggle}>
-                    settings
-                  </Link>
-                </li>
-                <li className=" px-4 py-4 text-[15px] font-medium leading-[22.5px]">
-                  <div onClick={handleLogout}>log out</div>
+                  <div>log out</div>
                 </li>
               </ul>
             </div>

@@ -120,16 +120,15 @@ const ForgortPassword = () => {
               </Link>
             </h1>
           </div>
-
-          <div className="absolute right-20 bottom-10">
-            <Link to="/">
-              <img
-                src={blob}
-                alt="decorative blob"
-                className="w-[38px] h-[34px]"
-              />
-            </Link>
-          </div>
+        </div>
+        <div className="absolute right-20 bottom-10">
+          <Link to="/">
+            <img
+              src={blob}
+              alt="decorative blob"
+              className="w-[38px] h-[34px]"
+            />
+          </Link>
         </div>
       </div>
     </Helmet>
