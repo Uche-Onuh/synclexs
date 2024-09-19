@@ -8,6 +8,7 @@ import Homepage from "./Homepage";
 import Settings from "./Settings";
 import Deals from "./Deals";
 import DealsDetail from "./Deals/DealsDetail";
+import AddDeal from "./Deals/AddDeal";
 
 export {
   Login,
@@ -19,4 +20,5 @@ export {
   Settings,
   Deals,
   DealsDetail,
+  AddDeal,
 };

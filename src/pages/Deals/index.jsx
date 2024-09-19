@@ -8,15 +8,13 @@ const Deals = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {" "}
       {/* Main wrapper for the page */}
       <Helmet title="Deals">
         <section className="flex-grow py-10">
-          {" "}
           {/* Main content area */}
           <div className="w-[90%] mx-auto flex justify-end">
             <button
-              onClick={() => navigate("/user/add-deals")}
+              onClick={() => navigate("/user/add-deal")}
               className="bg-alternate py-2 px-4 rounded-l font-normal text-[15px] leading-[22px] text-white hover:bg-primary hover:text-[#000] uppercase mb-20"
               aria-label="Add a new deal"
             >

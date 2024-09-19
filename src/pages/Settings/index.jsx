@@ -1,12 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Helmet } from "../../components";
 import { profile } from "../../assets";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import axios from "../../api/axios";
+import { useSelector } from "react-redux";
+
+const LAWYER_DETAILS = "lawyers";
+const USER_DETAILS = "auth/user-detail/";
 
 const Settings = () => {
+  const id = useSelector((state) => state.user.id);
+  const token = useSelector((state) => state.user.token);
+
   // State to hold the names of the uploaded files
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [error, setError] = useState("");
@@ -21,9 +28,45 @@ const Settings = () => {
     mobile: "",
   });
 
+  // Fetch the user's data when the component mounts
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(USER_DETAILS, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const { first_name, last_name, email } = response.data;
+
+        // Populate the form fields with the user details from the API
+        setFormValues({
+          firstName: first_name || "",
+          lastName: last_name || "",
+          email: email || "",
+        });
+
+        // // If a profile image URL exists, use it as the profile image
+        // if (profileImageUrl) {
+        //   setProfileImage(profileImageUrl);
+        // }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        toast.error("Failed to load user details.");
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  // Handle input change function
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value, // Update the specific field dynamically
+    }));
   };
 
   const onDrop = (acceptedFiles, fileRejections) => {
@@ -147,34 +190,37 @@ const Settings = () => {
                 Edit Details
               </h1>
 
-              {/* Form Fields */}
-              {["firstName", "lastName", "email", "mobile"].map((field) => (
-                <div
-                  key={field}
-                  className="flex flex-col border-[1px] border-[#2A2B2C] rounded-[10px] relative h-[50px] w-full mb-11"
-                >
-                  <label
-                    htmlFor={field}
-                    className="absolute top-[-15px] left-10 font-medium text-[20px] leading-[30px] px-[5px] bg-white uppercase"
+              {["firstName", "lastName", "email", "mobile", "address"].map(
+                (field) => (
+                  <div
+                    key={field}
+                    className="flex flex-col border-[1px] border-[#2A2B2C] rounded-[10px] relative h-[50px] w-full mb-11"
                   >
-                    {field === "firstName"
-                      ? "First Name"
-                      : field === "lastName"
-                      ? "Last Name"
-                      : field === "email"
-                      ? "Email Address"
-                      : "Mobile Number"}
-                  </label>
-                  <input
-                    type={field === "email" ? "email" : "text"}
-                    id={field}
-                    name={field}
-                    value={formValues[field]}
-                    onChange={handleInputChange}
-                    className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
-                  />
-                </div>
-              ))}
+                    <label
+                      htmlFor={field}
+                      className="absolute top-[-15px] left-10 font-medium text-[20px] leading-[30px] px-[5px] bg-white uppercase"
+                    >
+                      {field === "firstName"
+                        ? "First Name"
+                        : field === "lastName"
+                        ? "Last Name"
+                        : field === "email"
+                        ? "Email Address"
+                        : field === "address"
+                        ? "Home Address"
+                        : "Mobile Number"}
+                    </label>
+                    <input
+                      type={field === "email" ? "email" : "text"}
+                      id={field}
+                      name={field}
+                      value={formValues[field]}
+                      onChange={handleInputChange}
+                      className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
+                    />
+                  </div>
+                )
+              )}
 
               {/* Displaying Error Messages */}
               {error && (

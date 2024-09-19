@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import axios from "../../api/axios"; // Ensure axios is imported
 import { maskEmail } from "../../utilityFunctions/functions";
 
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/slice/userSlice";
+
 const VERIFY_EMAIL = "auth/verify-email/"; // Ideally, this URL should be managed via environment variables
 
 const VerifyEmail = () => {
@@ -14,6 +17,8 @@ const VerifyEmail = () => {
   const [codes, setCodes] = useState(["", "", "", ""]);
   const [errors, setErrors] = useState({});
   const [isLoading, setisLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   // Handle input change and remove error
   const handleChange = (index, e) => {
@@ -73,7 +78,7 @@ const VerifyEmail = () => {
 
       try {
         // If form is valid, proceed with form submission
-        await axios.post(
+        const response = await axios.post(
           VERIFY_EMAIL,
           JSON.stringify({
             email,
@@ -88,13 +93,24 @@ const VerifyEmail = () => {
         );
         setisLoading(false);
 
-        toast.success("Verification successful");
+        const token = response.data.token.access;
+        const id = response.data.user_id;
+
+        dispatch(
+          login({
+            id,
+            token,
+            isLoggedIn: true,
+          })
+        );
+
+        toast.success("Verification successful, redirecting to homepage");
 
         setTimeout(() => {
-          navigate("/auth/login"); // Redirect to a different page after verification
+          navigate("/");
         }, 3000);
 
-        console.log("Form submitted successfully:", pin);
+        // console.log("Form submitted successfully:", pin);
       } catch (error) {
         // Error handling
         setisLoading(false);
@@ -161,7 +177,11 @@ const VerifyEmail = () => {
                 type="submit"
                 className="bg-[#003574] py-2 rounded-[10px] outline-none border-none hover:bg-primary text-secondary hover:text-tertiary font-bold text-[24px] transition  ease-in-out duration-700"
               >
-                Verify
+                {isLoading ? (
+                  <span className="spinner">Loading...</span>
+                ) : (
+                  "Verify"
+                )}
               </button>
             </div>
           </form>

@@ -1,0 +1,6 @@
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjU0MTI4LCJpYXQiOjE3MjY2NTIzMjgsImp0aSI6Ijc3MmJjMDlmZDM2MjQ4NjQ4YTQ2OGQ1OTY4YWJkODYzIiwidXNlcl9pZCI6NywiZW1haWwiOiJvbnVoYmxhemVAZ21haWwuY29tIiwiaXNfc3RhZmYiOmZhbHNlfQ._F3V8LaKy21Fi6lJkAfhdp-IAWkDFKjz0gr2cBZy-kQ
+
+{
+    "user": "{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NzUzMjUyLCJpYXQiOjE3MjY2NjY4NTIsImp0aSI6IjE0Mzk4MWQwZjkyNjQxZDliMzk4YTVhM2VhNmNkOGNiIiwidXNlcl9pZCI6NywiZW1haWwiOiJvbnVoYmxhemVAZ21haWwuY29tIiwiaXNfc3RhZmYiOmZhbHNlfQ.iLEcH0ODtx1nWKLvDzlhiiqv9FZO4Nx6r1yWgTB6kpc\",\"isLoggedIn\":true}",
+    "_persist": "{\"version\":-1,\"rehydrated\":true}"
+}

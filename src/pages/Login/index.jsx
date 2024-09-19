@@ -80,10 +80,12 @@ const Login = () => {
           }
         );
 
-        const token = response.data.token;
+        const token = response.data.token.access;
+        const id = response.data.user_id;
 
         dispatch(
           login({
+            id,
             token,
             isLoggedIn: true,
           })
