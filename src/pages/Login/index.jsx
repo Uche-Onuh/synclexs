@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { blob, logoblack } from "../../assets";
 import { toast } from "react-toastify";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
-import axios from "../../api/axios"; // Ensure axios is imported
+import axios from "../../api/axios"; 
 
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slice/userSlice";

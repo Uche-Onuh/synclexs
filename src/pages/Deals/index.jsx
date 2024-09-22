@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "../../components";
-import { deals } from "../../constants";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
+import { useSelector } from "react-redux";
+
+const USER_DEALS = "deals/";
 
 const Deals = () => {
+  const [deals, setDeals] = useState([]);
   const navigate = useNavigate();
+  const token = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    const fetchDeals = async () => {
+      try {
+        const response = await axios.get(USER_DEALS, {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+        setDeals(response.data);
+      } catch (err) {
+        setError("Failed to fetch deals. Please try again later.");
+      }
+    };
+
+    fetchDeals();
+  }, [token]); // Add token as a dependency
 
   return (
     <div className="flex flex-col min-h-screen">
