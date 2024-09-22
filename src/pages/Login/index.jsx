@@ -20,6 +20,7 @@ const Login = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setloading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ const Login = () => {
     if (validate()) {
       const { email, password } = formValues; // Destructure email and password here
       try {
+        setloading(true);
         const response = await axios.post(
           LOGIN_URL,
           JSON.stringify({ email, password }),
@@ -80,14 +82,17 @@ const Login = () => {
           }
         );
 
+        setloading(false);
         const token = response.data.token.access;
         const id = response.data.user_id;
+        const isLawyer = response.data.is_lawyer;
 
         dispatch(
           login({
             id,
             token,
             isLoggedIn: true,
+            isLawyer,
           })
         );
 
@@ -103,6 +108,7 @@ const Login = () => {
         );
       }
     } else {
+      setloading(false);
       toast.error("Validation failed. Please fix the errors and try again.");
     }
   };
@@ -181,9 +187,10 @@ const Login = () => {
             <div className="flex flex-col gap-1">
               <button
                 type="submit"
+                disabled={loading}
                 className="bg-[#003574] py-2 rounded-[10px] outline-none border-none hover:bg-primary text-secondary hover:text-tertiary font-bold text-[24px] transition  ease-in-out duration-700"
               >
-                Log in
+                {loading ? "Loading..." : "Log in"}
               </button>
             </div>
           </form>

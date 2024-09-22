@@ -1,6 +1,6 @@
 import Login from "./Login";
 import Signup from "./Signup";
-import ForgortPassword from "./Login/ForgortPassword";
+import ForgotPassword from "./Login/ForgotPassword";
 import ResetPassword from "./Login/ResetPassword";
 import VerifyEmail from "./Signup/VerifyEmail";
 
@@ -13,7 +13,7 @@ import AddDeal from "./Deals/AddDeal";
 export {
   Login,
   Signup,
-  ForgortPassword,
+  ForgotPassword,
   ResetPassword,
   VerifyEmail,
   Homepage,

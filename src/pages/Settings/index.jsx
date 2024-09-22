@@ -3,14 +3,15 @@ import { Helmet } from "../../components";
 import { profile } from "../../assets";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
 import axios from "../../api/axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../../redux/slice/userSlice";
 
-const LAWYER_DETAILS = "lawyers";
 const USER_DETAILS = "auth/user-detail/";
+const REGISTER_LAWYER = "lawyers/";
 
 const Settings = () => {
+  const dispatch = useDispatch();
   const id = useSelector((state) => state.user.id);
   const token = useSelector((state) => state.user.token);
 
@@ -53,7 +54,6 @@ const Settings = () => {
         // }
       } catch (error) {
         console.error("Error fetching user data:", error);
-        toast.error("Failed to load user details.");
       }
     };
 
@@ -134,24 +134,27 @@ const Settings = () => {
 
     // Append uploaded files
     uploadedFiles.forEach(({ file }) => {
-      formData.append("uploadedFiles", file);
+      formData.append("identification_document", file);
     });
 
-    console.log("Form Data:", [...formData.entries()]);
+    formData.append("user_id", id);
 
-    // Example API call
-    // try {
-    //   const response = await fetch("/api/upload", {
-    //     method: "POST",
-    //     body: formData,
-    //   });
-    //   const data = await response.json();
-    //   console.log("Success:", data);
-    // } catch (error) {
-    //   console.error("Error submitting form:", error);
-    // }
+    // console.log("Form Data:", [...formData.entries()]);
 
-    toast.success("Profile Updated Successfully");
+    try {
+      const response = await axios.post(REGISTER_LAWYER, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Success:", response.data);
+      toast.success("Documents Successfully Uploaded");
+      dispatch(login(isLawyer === true));
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Failed to upload documents");
+    }
   };
 
   return (
@@ -181,13 +184,13 @@ const Settings = () => {
                   onClick={handleEditProfileClick}
                   className="bg-alternate py-2 px-4 rounded-l font-normal text-[15px] leading-[22px] text-white hover:bg-primary hover:text-[#000]  uppercase"
                 >
-                  Edit profile
+                  Upload picture
                 </button>
               </div>
             </div>
             <div className="w-full md:w-2/3">
               <h1 className="font-bold text-[40px] leading-[60px] mb-8">
-                Edit Details
+                Upload Details
               </h1>
 
               {["firstName", "lastName", "email", "mobile", "address"].map(
@@ -295,7 +298,7 @@ const Settings = () => {
         </form>
       </section>
 
-      <section className="w-full py-10 ">
+      {/* <section className="w-full py-10 ">
         <div className="w-[90%] mx-auto flex justify-end">
           <Link
             to="/user/deals"
@@ -304,7 +307,7 @@ const Settings = () => {
             See My Deals
           </Link>
         </div>
-      </section>
+      </section> */}
     </Helmet>
   );
 };

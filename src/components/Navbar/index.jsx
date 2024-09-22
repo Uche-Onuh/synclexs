@@ -1,29 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { logoblack, user } from "../../assets";
 import { navLinks } from "../../constants";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../redux/slice/userSlice"; // Import your logout action
+import { logout } from "../../redux/slice/userSlice";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 
 const Navbar = () => {
-  // Fetching isLoggedIn state from Redux store
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn); // Access isLoggedIn directly from the Redux store
+  const { token, expirationTime, isLoggedIn, isLawyer } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const handleToggle = () => {
-    setToggle((prev) => !prev);
-  };
-  const handleOpen = () => {
-    setOpen((prev) => !prev);
-  };
+  const handleToggle = () => setToggle((prev) => !prev); // Toggle menu state
+
+  const closeMenu = () => setToggle(false); // Always set toggle to false
+
+  const handleOpen = () => setOpen((prev) => !prev); // Toggle mobile menu
 
   const handleLogout = () => {
     dispatch(logout()); // Dispatch the logout action to update the Redux store
+    closeMenu(); // Close the menu after logging out
   };
+
+  useEffect(() => {
+    if (token && expirationTime) {
+      const currentTime = Date.now();
+      const timeLeft = expirationTime - currentTime;
+
+      const logoutTimer = setTimeout(() => {
+        dispatch(logout());
+      }, timeLeft);
+
+      return () => clearTimeout(logoutTimer);
+    }
+  }, [token, expirationTime, dispatch]);
 
   return (
     <div className="w-[90%] mx-auto py-1 flex items-center justify-between">
@@ -56,29 +70,38 @@ const Navbar = () => {
                 toggle
                   ? "scale-100 opacity-100"
                   : "scale-0 opacity-0 pointer-events-none"
-              } transform transition-transform duration-300 ease-in-out absolute top-[100%] bg-hover   w-[250px] left-[-400%] z-10 origin-top bg-white`}
+              } transform transition-transform duration-300 ease-in-out absolute top-[100%] bg-white w-[250px] left-[-400%] z-10 origin-top`}
               aria-expanded={toggle}
               aria-controls="user-menu"
             >
               <ul className="uppercase">
                 {[
-                  { path: "user/profile", label: "profile" },
-                  { path: "user/deals", label: "deals" },
-                  { path: "user/settings", label: "settings" },
+                  { path: "user/profile", label: "Profile" },
+                  { path: "user/deals", label: "Deals" },
                 ].map(({ path, label }) => (
                   <li
                     key={path}
-                    className="border-b-2 border-b-black px-4 py-4 text-[15px] font-medium leading-[22.5px]"
-                    onClick={handleToggle}
+                    className="border-b-2 border-black px-4 py-4 text-[15px] font-medium leading-[22.5px]"
+                    onClick={closeMenu} // Close the menu when clicked
                   >
                     <Link to={path}>{label}</Link>
                   </li>
                 ))}
+
+                {!isLawyer && (
+                  <li
+                    className="border-b-2 border-black px-4 py-4 text-[15px] font-medium leading-[22.5px]"
+                    onClick={closeMenu} // Close the menu when clicked
+                  >
+                    <Link to="user/register">Register Lawyer</Link>
+                  </li>
+                )}
+
                 <li
                   className="px-4 py-4 text-[15px] font-medium leading-[22.5px]"
-                  onClick={handleLogout}
+                  onClick={handleLogout} // Log out and close the menu
                 >
-                  <div>log out</div>
+                  <div>Log out</div>
                 </li>
               </ul>
             </div>

@@ -101,6 +101,7 @@ const VerifyEmail = () => {
             id,
             token,
             isLoggedIn: true,
+            isLawyer,
           })
         );
 

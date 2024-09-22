@@ -1,9 +1,3 @@
-// export const maskEmail = (email) => {
-//   const [localPart, domain] = email.split("@");
-//   const maskedLocalPart = localPart.replace(/./g, "*"); // Replace all characters with asterisks
-//   return `${maskedLocalPart}@${domain}`;
-// };
-
 export const maskEmail = (email) => {
   const [localPart, domain] = email.split("@");
   if (localPart.length > 2) {
@@ -17,3 +11,12 @@ export const maskEmail = (email) => {
   // If the local part has 2 or fewer characters, display it as is
   return `${localPart}@${domain}`;
 };
+
+
+export const formatCurrency = (value) => {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+  }).format(value);
+};
+
