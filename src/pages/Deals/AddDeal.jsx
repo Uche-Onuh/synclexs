@@ -158,12 +158,11 @@ const AddDeal = () => {
 
   const handleSubmit = async () => {
     // Prepare data for submission to backend
-    const dealData = {
-      location: formData.location,
-      property_value: formData.price,
-      property_type: formData.propertyType,
-      documents: uploadedFiles.map((file) => file.file), // Collect the actual files
-    };
+    const dealData = new FormData();
+    dealData.append("location", formData.location);
+    dealData.append("property_value", formData.price);
+    dealData.append("property_type", formData.propertyType);
+    uploadedFiles.forEach((file) => dealData.append("documents", file.file));
 
     // Submit to backend (replace with actual backend URL)
     try {

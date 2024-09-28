@@ -135,7 +135,7 @@ const Signup = () => {
           </h1>
 
           <form className="my-[50px]" onSubmit={handleSubmit}>
-            <div className="flex items-center justify-center gap-3 mb-11">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-3 mb-11">
               <div className="flex flex-col border-[1px] border-[#2A2B2C] rounded-[10px] relative h-[50px] w-full">
                 <label
                   htmlFor="firstName"

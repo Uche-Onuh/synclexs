@@ -20,3 +20,13 @@ export const formatCurrency = (value) => {
   }).format(value);
 };
 
+export function formatISODate(
+  isoString,
+  options = { year: "numeric", month: "long", day: "numeric" }
+) {
+  const date = new Date(isoString);
+
+  // Format the date based on the given options or use default (e.g., 'September 23, 2024')
+  return date.toLocaleDateString("en-US", options);
+}
+

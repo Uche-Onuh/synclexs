@@ -26,7 +26,8 @@ const Settings = () => {
     firstName: "",
     lastName: "",
     email: "",
-    mobile: "",
+    phone_number: "",
+    address: "",
   });
 
   // Fetch the user's data when the component mounts
@@ -220,6 +221,9 @@ const Settings = () => {
                       value={formValues[field]}
                       onChange={handleInputChange}
                       className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
+                      disabled={["firstName", "lastName", "email"].includes(
+                        field
+                      )} // Disable these fields
                     />
                   </div>
                 )

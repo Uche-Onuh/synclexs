@@ -9,6 +9,7 @@ import Settings from "./Settings";
 import Deals from "./Deals";
 import DealsDetail from "./Deals/DealsDetail";
 import AddDeal from "./Deals/AddDeal";
+import Profile from "./Profile";
 
 export {
   Login,
@@ -21,4 +22,5 @@ export {
   Deals,
   DealsDetail,
   AddDeal,
+  Profile,
 };
