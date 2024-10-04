@@ -53,7 +53,7 @@ const Navbar = () => {
             key={link.id}
             className="font-normal text-[15px] leading-[22px] hover:text-primary"
           >
-            <NavLink to={link.path}>{link.display}</NavLink>
+            <a href={link.path}>{link.display}</a>
           </li>
         ))}
       </ul>
@@ -138,9 +138,9 @@ const Navbar = () => {
                 key={link.id}
                 className=" px-4 text-[14px] leading-8 uppercase font-bold text-primary"
               >
-                <NavLink to={link.path} onClick={handleOpen}>
+                <a href={link.path} onClick={handleOpen}>
                   {link.display}
-                </NavLink>
+                </a>
               </li>
             ))}
           </ul>

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Helmet } from "../../components";
+import { Helmet, LoadingSpinner } from "../../components";
 import Select from "react-select";
 import { VscTriangleDown } from "react-icons/vsc";
 import { useDropzone } from "react-dropzone";
@@ -12,9 +12,18 @@ import { useSelector } from "react-redux";
 const CREATE_DEAL = "deals/";
 
 const options = [
-  { value: "Kosofe", label: "Kosofe", min: 150000, max: 300000 },
-  { value: "Alimosho", label: "Alimosho", min: 250000, max: 500000 },
-  { value: "Ikorodu", label: "Ikorodu", min: 350000, max: 600000 },
+  { value: "Kosofe", label: "Kosofe" },
+  { value: "Alimosho", label: "Alimosho" },
+  { value: "Ikorodu", label: "Ikorodu" },
+];
+
+const options2 = [
+  {
+    id: "conveyancing",
+    value: "Conveyancing & Assignments",
+    label: "Conveyancing & Assignments",
+  },
+  { id: "mortgage", value: "Mortgage", label: "Mortgage" },
 ];
 
 const propertyTypes = [
@@ -77,19 +86,24 @@ const AddDeal = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [rangeValue, setRangeValue] = useState(null);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [commission, setCommission] = useState(null);
+  const [priceValue, setPriceValue] = useState(null);
   const [propertyType, setPropertyType] = useState(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const fileInputRef = useRef(null); // Reference to the hidden file input
   const [error, setError] = useState(""); // Error state
+  const [loading, setLoading] = useState(false);
 
   const token = useSelector((state) => state.user.token);
 
   const [formData, setFormData] = useState({
     location: "",
-    price: null,
+    transactionType: "",
+    priceValue: priceValue,
     propertyType: "",
     propertyFiles: [],
+    commission: "",
   });
 
   const onDrop = (acceptedFiles, fileRejections) => {
@@ -130,13 +144,51 @@ const AddDeal = () => {
 
   const handleSelectChange = (option) => {
     setSelectedOption(option);
-    setRangeValue(option.min); // Initialize range to the minimum value
     setFormData({ ...formData, location: option.value });
   };
 
-  const handleRangeChange = (e) => {
-    setRangeValue(Number(e.target.value));
-    setFormData({ ...formData, price: e.target.value });
+  const handleTransactionChange = (option) => {
+    setSelectedTransaction(option);
+    setFormData({ ...formData, transactionType: option.value });
+  };
+
+  const handlePriceChange = (e) => {
+    const price = Number(e.target.value);
+    setPriceValue(price);
+
+    let commission = 0;
+
+    // Check the selected transaction type
+    if (selectedTransaction && selectedTransaction.value === "Mortgage") {
+      // Calculate commission for mortgage transactions
+      if (price < 50000000) {
+        commission = price * 0.04; // 4% for properties < ₦50m
+      } else if (price >= 50000000 && price <= 100000000) {
+        commission = 2000000 + ((price - 50000000) / 10000000) * 300000; // ₦2m + 3% for excess
+      } else if (price > 100000000) {
+        commission = 4500000 + ((price - 100000000) / 10000000) * 200000; // ₦4.5m + 2% for excess
+      }
+    } else {
+      if (price < 50000000) {
+        commission = price * 0.1;
+      } else if (price >= 50000000 && price <= 100000000) {
+        commission = 5000000;
+        const excessAmount = price - 50000000;
+        commission += (excessAmount / 10000000) * (0.05 * 10000000);
+      } else if (price > 100000000) {
+        commission = 7500000;
+        const excessAmount = price - 100000000;
+        commission += (excessAmount / 10000000) * (0.02 * 10000000);
+      }
+    }
+
+    setCommission(commission);
+    // Now set the formData with the updated values
+    setFormData((prevData) => ({
+      ...prevData,
+      priceValue: price,
+      commission: commission, // Update commission here as well
+    }));
   };
 
   const handlePropertyTypeChange = (option) => {
@@ -152,37 +204,40 @@ const AddDeal = () => {
     setStep(step - 1);
   };
 
-  // const handleChange = (input) => (e) => {
-  //   setFormData({ ...formData, [input]: e.target.value });
-  // };
-
   const handleSubmit = async () => {
     // Prepare data for submission to backend
     const dealData = new FormData();
     dealData.append("location", formData.location);
-    dealData.append("property_value", formData.price);
+    dealData.append("property_value", formData.priceValue);
     dealData.append("property_type", formData.propertyType);
+    dealData.append("transactionType", formData.transactionType);
+    dealData.append("commission", formData.commission);
     uploadedFiles.forEach((file) => dealData.append("documents", file.file));
 
     // Submit to backend (replace with actual backend URL)
     try {
+      setLoading(true);
       const response = await axios.post(CREATE_DEAL, dealData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
+      setLoading(false);
       console.log("Deal submitted successfully:", response.data);
       toast.success("Deal successfully created, Redirecting to payment");
       setTimeout(() => {
         navigate("/payment");
       }, 3000);
-      // Handle successful submission, like redirecting or showing success message
     } catch (error) {
+      setLoading(false);
       toast.error("Failed to submit deal. Please try again.");
-      // setError("Failed to submit deal. Please try again.");
     }
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen relative">
@@ -192,17 +247,20 @@ const AddDeal = () => {
             <Step1
               nextStep={nextStep}
               handleSelectChange={handleSelectChange}
-              handleRangeChange={handleRangeChange}
+              handlePriceChange={handlePriceChange}
               selectedOption={selectedOption}
-              rangeValue={rangeValue}
+              handleTransactionChange={handleTransactionChange}
+              priceValue={priceValue}
+              selectedTransaction
             />
           )}
           {step === 2 && (
             <Step2
               nextStep={nextStep}
               prevStep={prevStep}
-              rangeValue={rangeValue}
               handlePropertyTypeChange={handlePropertyTypeChange}
+              commission={commission}
+              priceValue={priceValue}
               propertyType={propertyType}
               selectedOption={selectedOption}
               uploadedFiles={uploadedFiles}
@@ -220,6 +278,10 @@ const AddDeal = () => {
               handleSubmit={handleSubmit}
               formData={formData}
               uploadedFiles={uploadedFiles}
+              priceValue={priceValue}
+              propertyType={propertyType}
+              commission={commission}
+              selectedTransaction={selectedTransaction}
             />
           )}
         </section>
@@ -231,9 +293,11 @@ const AddDeal = () => {
 const Step1 = ({
   nextStep,
   handleSelectChange,
-  handleRangeChange,
+  handleTransactionChange,
   selectedOption,
-  rangeValue,
+  handlePriceChange,
+  priceValue,
+  selectedTransaction,
 }) => (
   <>
     <h1 className="text-[32px] font-semibold leading-[48px] mb-6">Location</h1>
@@ -244,40 +308,39 @@ const Step1 = ({
       components={{ DropdownIndicator: CustomDropdownIndicator }}
       onChange={handleSelectChange}
     />
+
     {selectedOption && (
-      <div className="mt-6">
-        <h2 className="text-[20px] font-semibold mb-4">
-          Properties price range between {formatCurrency(selectedOption.min)}{" "}
-          and {formatCurrency(selectedOption.max)}
-        </h2>
-        <input
-          type="range"
-          min={selectedOption.min}
-          max={selectedOption.max}
-          value={rangeValue}
-          onChange={handleRangeChange}
-          className="w-full custom-range"
-          style={{
-            background: `linear-gradient(to right, #708DB0 ${
-              ((rangeValue - selectedOption.min) /
-                (selectedOption.max - selectedOption.min)) *
-              100
-            }%, #fff ${
-              ((rangeValue - selectedOption.min) /
-                (selectedOption.max - selectedOption.min)) *
-              100
-            }%)`,
-          }}
+      <div className="my-6">
+        <Select
+          options={options2}
+          styles={customStyles}
+          placeholder="Transaction"
+          components={{ DropdownIndicator: CustomDropdownIndicator }}
+          onChange={handleTransactionChange}
         />
-        <p className="mt-2 text-[20px] font-semibold">
-          Selected Price: {formatCurrency(rangeValue)}
-        </p>
       </div>
     )}
+
+    {selectedOption && (
+      <div className="flex flex-col mt-4 gap-3 mb-6">
+        <label htmlFor="price" className="text-[20px]">
+          Price
+        </label>
+        <input
+          disabled={!selectedTransaction}
+          type="text"
+          id="price"
+          placeholder="Enter the amount here"
+          className="border-[1px] border-black py-3 px-2 rounded-lg text-[20px]"
+          onChange={handlePriceChange}
+        />
+      </div>
+    )}
+
     <button
       className="bg-alternate py-2 px-4 rounded-l font-normal text-[15px] leading-[22px] text-white hover:bg-primary hover:text-[#000] uppercase mb-20 absolute bottom-4 right-20"
       onClick={nextStep}
-      disabled={rangeValue === null}
+      disabled={!priceValue}
     >
       Continue
     </button>
@@ -285,10 +348,10 @@ const Step1 = ({
 );
 
 const Step2 = ({
+  priceValue,
   nextStep,
   prevStep,
   handlePropertyTypeChange,
-  rangeValue,
   selectedOption,
   propertyType,
   uploadedFiles,
@@ -297,6 +360,7 @@ const Step2 = ({
   isDragActive,
   error,
   removeFile,
+  commission,
 }) => (
   <>
     {/* Render step 2 content */}
@@ -317,7 +381,11 @@ const Step2 = ({
     <div className="mt-10">
       <p className="font-normal text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
         Property Value:{" "}
-        <span className="font-semibold ml-5">{formatCurrency(rangeValue)}</span>
+        <span className="font-semibold ml-5">{formatCurrency(priceValue)}</span>
+      </p>
+      <p className="font-normal text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
+        Commission on Property
+        <span className="font-semibold ml-5">{formatCurrency(commission)}</span>
       </p>
       <p className="font-normal text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
         Location:{" "}
@@ -397,7 +465,15 @@ const Step2 = ({
   </>
 );
 
-const Step3 = ({ prevStep, handleSubmit, formData, uploadedFiles }) => (
+const Step3 = ({
+  prevStep,
+  handleSubmit,
+  formData,
+  uploadedFiles,
+  // priceValue,
+  // propertyType,
+  // commission,
+}) => (
   <>
     <h1 className="text-[32px] font-semibold leading-[48px] mb-6 ">
       Review Your Deal
@@ -407,9 +483,21 @@ const Step3 = ({ prevStep, handleSubmit, formData, uploadedFiles }) => (
         <strong className="mr-3">Location:</strong> {formData.location}
       </p>
       <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
-        <strong className="mr-3">Selected Price:</strong>{" "}
-        {formatCurrency(formData.price)}
+        <strong className="mr-3">Transaction type:</strong>{" "}
+        {formData.transactionType}
       </p>
+      <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
+        <strong className="mr-3">Property value:</strong>{" "}
+        {formatCurrency(formData.priceValue)}
+      </p>
+      <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
+        <strong className="mr-3">Property commission:</strong>{" "}
+        {formatCurrency(formData.commission)}
+      </p>
+      {/* <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
+        <strong className="mr-3">Property value:</strong>{" "}
+        {formatCurrency(formData.priceValue)}
+      </p> */}
       <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2 capitalize">
         <strong className="mr-3">Property Type:</strong> {formData.propertyType}
       </p>

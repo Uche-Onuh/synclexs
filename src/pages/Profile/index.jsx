@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Helmet } from "../../components";
+import { Helmet, LoadingSpinner } from "../../components";
 import { profile } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
@@ -34,9 +34,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   if (!user) {
-    return (
-      <section className="w-[90%] h-[90vh] mx-auto mt-16">Loading...</section>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

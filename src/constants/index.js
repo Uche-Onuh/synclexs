@@ -13,17 +13,17 @@ import { brand1, brand2, brand3 } from "../assets";
 export const navLinks = [
   {
     id: "about",
-    path: "about-us",
+    path: "/#about",
     display: "About us",
   },
   {
     id: "service",
-    path: "service",
+    path: "/#services",
     display: "Service",
   },
   {
     id: "faq",
-    path: "#faq",
+    path: "/#faqs",
     display: "FAQs",
   },
 ];

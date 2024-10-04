@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Helmet } from "../../components";
+import { Helmet, LoadingSpinner } from "../../components";
 import { useParams } from "react-router-dom";
 import axios from "../../api/axios";
 import { useSelector } from "react-redux";
@@ -39,9 +39,7 @@ const DealsDetail = () => {
   }
 
   if (!deal) {
-    return (
-      <section className="w-[90%] h-[90vh] mx-auto mt-16">Loading...</section>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

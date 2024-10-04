@@ -43,7 +43,7 @@ const Homepage = () => {
         ))}
       </section>
 
-      <section className="w-[90%] h-auto mx-auto flex flex-col md:flex-row justify-center items-center mt-16">
+      <section id="about" className="w-[90%] h-auto mx-auto flex flex-col md:flex-row justify-center items-center mt-16">
         <div className="w-full md:w-[55%] flex flex-col md:flex-row justify-center items-center bg-alternate">
           <div className="w-full md:w-[25%] h-[600px]">
             <img
@@ -103,7 +103,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      <section className="w-[90%] h-auto mx-auto flex flex-col md:flex-row justify-between items-center mt-16">
+      <section id="partners" className="w-[90%] h-auto mx-auto flex flex-col md:flex-row justify-between items-center mt-16">
         <div className="w-full md:w-[30%]">
           <h1 className="text-[26px] font-bold leading-[75px] mb-2">
             Our partners
@@ -126,7 +126,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      <section className="w-full h-auto bg-servicebg bg-no-repeat bg-cover bg-top mt-10 relative">
+      <section id="services" className="w-full h-auto bg-servicebg bg-no-repeat bg-cover bg-top mt-10 relative">
         <div className="absolute w-full h-full bg-alternate opacity-50"></div>
         <div className="w-[90%] mx-auto pt-20 pb-28 text-white relative z-10 ">
           <h1 className="text-[55px] font-bold leading-[75px] mb-12">
@@ -176,7 +176,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      <section className="w-[90%] h-auto mx-auto my-16">
+      <section id="faqs" className="w-[90%] h-auto mx-auto my-16">
         <div className="w-[90%] text-black mx-auto text-center">
           <h1 className="font-bold text-[25px] md:text-[48px] leading-[30px] md:leading-[62.5px] mb-5">
             Frequently Asked Questions
