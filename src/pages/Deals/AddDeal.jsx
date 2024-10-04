@@ -210,7 +210,7 @@ const AddDeal = () => {
     dealData.append("location", formData.location);
     dealData.append("property_value", formData.priceValue);
     dealData.append("property_type", formData.propertyType);
-    dealData.append("transactionType", formData.transactionType);
+    dealData.append("deal_type", formData.transactionType);
     dealData.append("commission", formData.commission);
     uploadedFiles.forEach((file) => dealData.append("documents", file.file));
 

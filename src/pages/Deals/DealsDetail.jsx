@@ -56,8 +56,15 @@ const DealsDetail = () => {
             <strong className="mr-3">Location:</strong> {deal.location}
           </p>
           <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
-            <strong className="mr-3">Selected Price:</strong>{" "}
+            <strong className="mr-3">Transaction type:</strong> {deal.deal_type}
+          </p>
+          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
+            <strong className="mr-3">Property value:</strong>{" "}
             {formatCurrency(deal.property_value)}
+          </p>
+          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
+            <strong className="mr-3">Commission:</strong>{" "}
+            {formatCurrency(deal.commission)}
           </p>
           <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2 capitalize">
             <strong className="mr-3">Property Type:</strong>{" "}
@@ -70,18 +77,6 @@ const DealsDetail = () => {
           <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2 capitalize">
             <strong className="mr-3">Deal Status:</strong> {deal.deal_status}
           </p>
-          {/* <h2 className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
-            Uploaded Files:
-          </h2>
-          <ul className="mt-2">
-            {deal.documents && deal.documents.length > 0 ? (
-              deal.documents.map((document, index) => (
-                <li key={index}>{document.file}</li>
-              ))
-            ) : (
-              <li>No documents uploaded.</li>
-            )}
-          </ul> */}
         </div>
       </section>
     </Helmet>

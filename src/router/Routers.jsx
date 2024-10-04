@@ -11,6 +11,7 @@ import {
   DealsDetail,
   AddDeal,
   Profile,
+  Editprofile,
 } from "../pages";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoutes";
@@ -26,6 +27,7 @@ const Routers = () => {
         <Route path="user/deals/:id" element={<DealsDetail />} />
         <Route path="user/add-deal" element={<AddDeal />} />
         <Route path="user/profile" element={<Profile />} />
+        <Route path="user/edit-profile" element={<Editprofile />} />
       </Route>
 
       <Route path="/*">

@@ -1,26 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Helmet } from "../../components";
 import { profile } from "../../assets";
-import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 import axios from "../../api/axios";
-import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../redux/slice/userSlice";
+import { useSelector } from "react-redux";
 
-const USER_DETAILS = "auth/user-detail/";
-const REGISTER_LAWYER = "lawyers/";
+const UPDATE_LAWYER = "lawyers/";
+const LAWYER_DETAIL = "lawyers";
 
-const Settings = () => {
-  const dispatch = useDispatch();
+const Editprofile = () => {
   const id = useSelector((state) => state.user.id);
   const token = useSelector((state) => state.user.token);
-
-  // State to hold the names of the uploaded files
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [error, setError] = useState("");
+  const [profileImageFile, setProfileImageFile] = useState(null);
   const [profileImage, setProfileImage] = useState(profile);
-  const [profileImageFile, setProfileImageFile] = useState(null); 
-  const fileInputRef = useRef(null); 
+  const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
   // State to hold form values
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -30,17 +24,16 @@ const Settings = () => {
     address: "",
   });
 
-  // Fetch the user's data when the component mounts
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(USER_DETAILS, {
+        const response = await axios.get(`${LAWYER_DETAIL}/${id}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        const { first_name, last_name, email } = response.data;
+        const { first_name, last_name, email, profile_photo } = response.data;
 
         // Populate the form fields with the user details from the API
         setFormValues({
@@ -49,10 +42,10 @@ const Settings = () => {
           email: email || "",
         });
 
-        // // If a profile image URL exists, use it as the profile image
-        // if (profileImageUrl) {
-        //   setProfileImage(profileImageUrl);
-        // }
+        // If a profile image URL exists, use it as the profile image
+        if (profile_photo) {
+          setProfileImage(profile_photo);
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -70,26 +63,6 @@ const Settings = () => {
     }));
   };
 
-  const onDrop = (acceptedFiles, fileRejections) => {
-    setError("");
-    if (acceptedFiles.length) {
-      setUploadedFiles((prevFiles) => [
-        ...prevFiles,
-        ...acceptedFiles.map((file) => ({
-          file, // Keep the actual file for submission
-          name: file.name,
-          preview: file.type.startsWith("image/")
-            ? URL.createObjectURL(file)
-            : null,
-          type: file.type,
-        })),
-      ]);
-    }
-    if (fileRejections.length) {
-      setError("Some files were rejected due to unsupported formats.");
-    }
-  };
-
   const handleProfileImageChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -101,22 +74,6 @@ const Settings = () => {
   const handleEditProfileClick = () => {
     fileInputRef.current.click();
   };
-
-  const removeFile = (fileName) => {
-    setUploadedFiles((prevFiles) =>
-      prevFiles.filter((file) => file.name !== fileName)
-    );
-  };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      "application/zip": [".zip"],
-      "application/pdf": [".pdf"],
-      "text/plain": [".txt"],
-      "image/*": [],
-    },
-  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -130,20 +87,11 @@ const Settings = () => {
 
     // Append profile image file
     if (profileImageFile) {
-      formData.append("profileImage", profileImageFile);
+      formData.append("profile_photo", profileImageFile);
     }
 
-    // Append uploaded files
-    uploadedFiles.forEach(({ file }) => {
-      formData.append("identification_document", file);
-    });
-
-    formData.append("user_id", id);
-
-    // console.log("Form Data:", [...formData.entries()]);
-
     try {
-      const response = await axios.post(REGISTER_LAWYER, formData, {
+      const response = await axios.put(`${UPDATE_LAWYER}/${id}/`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -151,7 +99,6 @@ const Settings = () => {
       });
       console.log("Success:", response.data);
       toast.success("Documents Successfully Uploaded");
-      dispatch(login(isLawyer === true));
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Failed to upload documents");
@@ -159,8 +106,8 @@ const Settings = () => {
   };
 
   return (
-    <Helmet title="Settings">
-      <section className="w-full border-b-2 border-black py-10">
+    <Helmet title="Edit Profile">
+      <section className="w-full border-b-2 border-black py-10 min-h-screen">
         <form className="w-[90%] mx-auto" onSubmit={handleSubmit}>
           <div className=" flex flex-col md:flex-row items-start mt-5 gap-7 mb-10">
             <div className="w-full md:w-1/3">
@@ -221,9 +168,7 @@ const Settings = () => {
                       value={formValues[field]}
                       onChange={handleInputChange}
                       className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
-                      disabled={["firstName", "lastName", "email"].includes(
-                        field
-                      )} // Disable these fields
+                      disabled={["email"].includes(field)} // Disable these fields
                     />
                   </div>
                 )
@@ -235,60 +180,6 @@ const Settings = () => {
                   {error}
                 </div>
               )}
-
-              {/* Displaying Uploaded File Names with Previews */}
-              {uploadedFiles.length > 0 && (
-                <div className="mb-4">
-                  <h2 className="text-lg font-semibold">Uploaded Files:</h2>
-                  <ul className="list-disc pl-5">
-                    {uploadedFiles.map((file, index) => (
-                      <li
-                        key={index}
-                        className="text-sm text-gray-700 flex items-center gap-2"
-                      >
-                        {/* Display preview if it's an image */}
-                        {file.preview && (
-                          <img
-                            src={file.preview}
-                            alt={file.name}
-                            className="w-10 h-10 object-cover rounded"
-                          />
-                        )}
-                        {file.name}
-                        <button
-                          onClick={() => removeFile(file.name)}
-                          className="ml-2 text-red-500 hover:underline text-xs"
-                        >
-                          Remove
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {/* Drag and Drop Section */}
-              <div
-                {...getRootProps()}
-                className={`border-[1px] border-[#2A2B2C] w-full relative h-[250px] flex items-center justify-center cursor-pointer rounded-[10px] ${
-                  isDragActive ? "bg-gray-100" : "bg-white"
-                }`}
-              >
-                <input {...getInputProps()} />
-                {isDragActive ? (
-                  <p className="text-[15px] font-medium text-primary">
-                    Drop the files here ...
-                  </p>
-                ) : (
-                  <div className="text-center">
-                    <p className="text-[15px] font-medium">
-                      Drag and drop your site output folder here
-                    </p>
-                    <a className="text-[15px] font-semibold">
-                      Or, <span className="underline">browse to upload</span>
-                    </a>
-                  </div>
-                )}
-              </div>
             </div>
           </div>
           <div className="flex justify-end">
@@ -305,4 +196,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Editprofile;

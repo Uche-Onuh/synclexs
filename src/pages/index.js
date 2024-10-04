@@ -10,6 +10,7 @@ import Deals from "./Deals";
 import DealsDetail from "./Deals/DealsDetail";
 import AddDeal from "./Deals/AddDeal";
 import Profile from "./Profile";
+import Editprofile from "./Profile/editProfile";
 
 export {
   Login,
@@ -23,4 +24,5 @@ export {
   DealsDetail,
   AddDeal,
   Profile,
+  Editprofile,
 };
