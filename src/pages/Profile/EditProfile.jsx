@@ -1,19 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Helmet } from "../../components";
+import { Helmet, LoadingSpinner } from "../../components";
 import { profile } from "../../assets";
 import { toast } from "react-toastify";
 import axios from "../../api/axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const UPDATE_LAWYER = "lawyers/";
+const UPDATE_LAWYER = "lawyers";
 const LAWYER_DETAIL = "lawyers";
 
 const Editprofile = () => {
+  const navigate = useNavigate();
   const id = useSelector((state) => state.user.id);
   const token = useSelector((state) => state.user.token);
   const [profileImageFile, setProfileImageFile] = useState(null);
   const [profileImage, setProfileImage] = useState(profile);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
   // State to hold form values
   const [formValues, setFormValues] = useState({
@@ -33,13 +35,22 @@ const Editprofile = () => {
           },
         });
 
-        const { first_name, last_name, email, profile_photo } = response.data;
+        const {
+          first_name,
+          last_name,
+          email,
+          profile_photo,
+          phone_number,
+          address,
+        } = response.data;
 
         // Populate the form fields with the user details from the API
         setFormValues({
           firstName: first_name || "",
           lastName: last_name || "",
           email: email || "",
+          address: address || "",
+          phone_number: phone_number || "",
         });
 
         // If a profile image URL exists, use it as the profile image
@@ -81,9 +92,11 @@ const Editprofile = () => {
     const formData = new FormData();
 
     // Append form values
-    Object.entries(formValues).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
+    formData.append("phone_number", formValues.phone_number);
+    formData.append("email", formValues.email);
+    formData.append("address", formValues.address);
+    formData.append("first_name", formValues.firstName);
+    formData.append("last_name", formValues.lastName);
 
     // Append profile image file
     if (profileImageFile) {
@@ -91,19 +104,29 @@ const Editprofile = () => {
     }
 
     try {
+      setLoading(true);
       const response = await axios.put(`${UPDATE_LAWYER}/${id}/`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
+      setLoading(false);
       console.log("Success:", response.data);
-      toast.success("Documents Successfully Uploaded");
+      toast.success("Profile Successfully Updated");
+      setTimeout(() => {
+        navigate("/user/profile");
+      }, 3000);
     } catch (error) {
+      setLoading(false);
       console.error("Error submitting form:", error);
       toast.error("Failed to upload documents");
     }
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Helmet title="Edit Profile">
@@ -141,45 +164,42 @@ const Editprofile = () => {
                 Upload Details
               </h1>
 
-              {["firstName", "lastName", "email", "mobile", "address"].map(
-                (field) => (
-                  <div
-                    key={field}
-                    className="flex flex-col border-[1px] border-[#2A2B2C] rounded-[10px] relative h-[50px] w-full mb-11"
+              {[
+                "firstName",
+                "lastName",
+                "email",
+                "phone_number",
+                "address",
+              ].map((field) => (
+                <div
+                  key={field}
+                  className="flex flex-col border-[1px] border-[#2A2B2C] rounded-[10px] relative h-[50px] w-full mb-11"
+                >
+                  <label
+                    htmlFor={field}
+                    className="absolute top-[-15px] left-10 font-medium text-[20px] leading-[30px] px-[5px] bg-white uppercase"
                   >
-                    <label
-                      htmlFor={field}
-                      className="absolute top-[-15px] left-10 font-medium text-[20px] leading-[30px] px-[5px] bg-white uppercase"
-                    >
-                      {field === "firstName"
-                        ? "First Name"
-                        : field === "lastName"
-                        ? "Last Name"
-                        : field === "email"
-                        ? "Email Address"
-                        : field === "address"
-                        ? "Home Address"
-                        : "Mobile Number"}
-                    </label>
-                    <input
-                      type={field === "email" ? "email" : "text"}
-                      id={field}
-                      name={field}
-                      value={formValues[field]}
-                      onChange={handleInputChange}
-                      className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
-                      disabled={["email"].includes(field)} // Disable these fields
-                    />
-                  </div>
-                )
-              )}
-
-              {/* Displaying Error Messages */}
-              {error && (
-                <div className="mb-4 text-red-500 text-sm font-semibold">
-                  {error}
+                    {field === "firstName"
+                      ? "First Name"
+                      : field === "lastName"
+                      ? "Last Name"
+                      : field === "email"
+                      ? "Email Address"
+                      : field === "address"
+                      ? "Home Address"
+                      : "Mobile Number"}
+                  </label>
+                  <input
+                    type={field === "email" ? "email" : "text"}
+                    id={field}
+                    name={field}
+                    value={formValues[field]}
+                    onChange={handleInputChange}
+                    className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
+                    disabled={["email"].includes(field)} // Disable these fields
+                  />
                 </div>
-              )}
+              ))}
             </div>
           </div>
           <div className="flex justify-end">

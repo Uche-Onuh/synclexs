@@ -22,7 +22,6 @@ const Profile = () => {
           },
         });
         setUser(response.data);
-        console.log(response.data);
       } catch (err) {
         setError("Failed to fetch deals. Please try again later.");
       }
@@ -44,7 +43,7 @@ const Profile = () => {
           <div className="w-full md:w-1/3">
             <div className="mx-auto w-[300px] h-[300px] rounded-full overflow-hidden">
               <img
-                src={profile}
+                src={user ? user.profile_photo : profile}
                 alt="user profile"
                 className="w-full h-full object-cover"
               />

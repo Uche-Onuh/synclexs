@@ -5,7 +5,10 @@ import { VscTriangleDown } from "react-icons/vsc";
 import { useDropzone } from "react-dropzone";
 import axios from "../../api/axios";
 import { toast } from "react-toastify";
-import { formatCurrency } from "../../utilityFunctions/functions";
+import {
+  formatCurrency,
+  calculateCommission,
+} from "../../utilityFunctions/functions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -37,23 +40,23 @@ const customStyles = {
     ...base,
     backgroundColor: "#003574CC",
     color: "#fff",
-    fontSize: "27px",
+    fontSize: window.innerWidth < 768 ? "18px" : "27px",
   }),
   singleValue: (base) => ({
     ...base,
     color: "#fff",
-    fontSize: "27px",
+    fontSize: window.innerWidth < 768 ? "18px" : "27px",
   }),
   dropdownIndicator: (base) => ({
     ...base,
     color: "#fff",
-    fontSize: "27px",
+    fontSize: window.innerWidth < 768 ? "18px" : "27px",
   }),
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isFocused ? "#003574CC" : "#D9D9D9",
     color: state.isSelected ? "#000" : "#000",
-    fontSize: "27px",
+    fontSize: window.innerWidth < 768 ? "18px" : "27px",
     borderBottom: "2px solid #000",
   }),
   menu: (base) => ({
@@ -62,7 +65,7 @@ const customStyles = {
   }),
   placeholder: (base) => ({
     ...base,
-    fontSize: "27px",
+    fontSize: window.innerWidth < 768 ? "18px" : "27px",
     color: "#fff",
   }),
 };
@@ -107,12 +110,13 @@ const AddDeal = () => {
   });
 
   const onDrop = (acceptedFiles, fileRejections) => {
-    setError("");
+    setError(""); // Clear any previous errors
+
     if (acceptedFiles.length) {
       setUploadedFiles((prevFiles) => [
         ...prevFiles,
         ...acceptedFiles.map((file) => ({
-          file, // Keep the actual file for submission
+          file,
           name: file.name,
           preview: file.type.startsWith("image/")
             ? URL.createObjectURL(file)
@@ -121,8 +125,22 @@ const AddDeal = () => {
         })),
       ]);
     }
+
+    // Handle file rejections due to size
     if (fileRejections.length) {
-      setError("Some files were rejected due to unsupported formats.");
+      const rejectedFilesDueToSize = fileRejections
+        .filter(({ errors }) => errors.some((e) => e.code === "file-too-large"))
+        .map(({ file }) => file.name);
+
+      if (rejectedFilesDueToSize.length) {
+        setError(
+          `File upload failed. Files larger than 5MB are not allowed: ${rejectedFilesDueToSize.join(
+            ", "
+          )}`
+        );
+      } else {
+        setError("Some files were rejected due to unsupported formats.");
+      }
     }
   };
 
@@ -134,6 +152,7 @@ const AddDeal = () => {
       "text/plain": [".txt"],
       "image/*": [],
     },
+    maxSize: 5 * 1024 * 1024, // 5MB file size limit
   });
 
   const removeFile = (fileName) => {
@@ -156,34 +175,14 @@ const AddDeal = () => {
     const price = Number(e.target.value);
     setPriceValue(price);
 
-    let commission = 0;
+    // Use the helper function to calculate the commission
+    const commission = calculateCommission(
+      price,
+      selectedTransaction ? selectedTransaction.value : null
+    );
 
-    // Check the selected transaction type
-    if (selectedTransaction && selectedTransaction.value === "Mortgage") {
-      // Calculate commission for mortgage transactions
-      if (price < 50000000) {
-        commission = price * 0.04; // 4% for properties < ₦50m
-      } else if (price >= 50000000 && price <= 100000000) {
-        commission = 2000000 + ((price - 50000000) / 10000000) * 300000; // ₦2m + 3% for excess
-      } else if (price > 100000000) {
-        commission = 4500000 + ((price - 100000000) / 10000000) * 200000; // ₦4.5m + 2% for excess
-      }
-    } else {
-      if (price < 50000000) {
-        commission = price * 0.1;
-      } else if (price >= 50000000 && price <= 100000000) {
-        commission = 5000000;
-        const excessAmount = price - 50000000;
-        commission += (excessAmount / 10000000) * (0.05 * 10000000);
-      } else if (price > 100000000) {
-        commission = 7500000;
-        const excessAmount = price - 100000000;
-        commission += (excessAmount / 10000000) * (0.02 * 10000000);
-      }
-    }
-
+    // Set commission and form data
     setCommission(commission);
-    // Now set the formData with the updated values
     setFormData((prevData) => ({
       ...prevData,
       priceValue: price,
@@ -232,6 +231,7 @@ const AddDeal = () => {
     } catch (error) {
       setLoading(false);
       toast.error("Failed to submit deal. Please try again.");
+      console.log(error);
     }
   };
 
@@ -300,7 +300,9 @@ const Step1 = ({
   selectedTransaction,
 }) => (
   <>
-    <h1 className="text-[32px] font-semibold leading-[48px] mb-6">Location</h1>
+    <h1 className="text-[18px] sm:text-[32px] font-semibold leading-[48px] mb-6">
+      Location
+    </h1>
     <Select
       options={options}
       styles={customStyles}
@@ -331,7 +333,7 @@ const Step1 = ({
           type="text"
           id="price"
           placeholder="Enter the amount here"
-          className="border-[1px] border-black py-3 px-2 rounded-lg text-[20px]"
+          className="border-[1px] border-black py-3 px-2 rounded-lg text-[16px] sm:text-[20px]"
           onChange={handlePriceChange}
         />
       </div>
@@ -364,10 +366,10 @@ const Step2 = ({
 }) => (
   <>
     {/* Render step 2 content */}
-    <h1 className="text-[32px] font-semibold leading-[48px] mb-6">
+    <h1 className="text-[24px] sm:text-[32px] font-semibold leading-[48px] mb-6">
       Deal Details
     </h1>
-    <h1 className="text-[32px] font-semibold leading-[48px] mb-6">
+    <h1 className="text-[24px] sm:text-[32px] font-semibold leading-[48px] mb-6">
       Property Type
     </h1>
     <Select
@@ -379,15 +381,15 @@ const Step2 = ({
     />
 
     <div className="mt-10">
-      <p className="font-normal text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
+      <p className="font-normal text-[16px] sm:text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
         Property Value:{" "}
         <span className="font-semibold ml-5">{formatCurrency(priceValue)}</span>
       </p>
-      <p className="font-normal text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
+      <p className="font-normal text-[16px] sm:text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
         Commission on Property
         <span className="font-semibold ml-5">{formatCurrency(commission)}</span>
       </p>
-      <p className="font-normal text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
+      <p className="font-normal text-[16px] sm:text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
         Location:{" "}
         <span className="font-semibold ml-5">{selectedOption.value}</span>
       </p>
@@ -431,7 +433,7 @@ const Step2 = ({
       >
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p className="text-[15px] font-medium text-primary">
+          <p className="text-[12px] sm:text-[15px] font-medium text-primary">
             Drop the files here ...
           </p>
         ) : (
@@ -475,33 +477,29 @@ const Step3 = ({
   // commission,
 }) => (
   <>
-    <h1 className="text-[32px] font-semibold leading-[48px] mb-6 ">
+    <h1 className="text-[24px] sm:text-[32px] font-semibold leading-[48px] mb-6 ">
       Review Your Deal
     </h1>
     <div className="mt-6">
-      <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
+      <p className="text-[16px] sm:text-[28px] font-semibold mb-4  w-full bg-grey py-3 px-2">
         <strong className="mr-3">Location:</strong> {formData.location}
       </p>
-      <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
+      <p className="text-[16px] sm:text-[28px] font-semibold mb-4  w-full bg-grey py-3 px-2">
         <strong className="mr-3">Transaction type:</strong>{" "}
         {formData.transactionType}
       </p>
-      <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
+      <p className="text-[16px] sm:text-[28px] font-semibold mb-4  w-full bg-grey py-3 px-2">
         <strong className="mr-3">Property value:</strong>{" "}
         {formatCurrency(formData.priceValue)}
       </p>
-      <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
+      <p className="text-[16px] sm:text-[28px] font-semibold mb-4  w-full bg-grey py-3 px-2">
         <strong className="mr-3">Property commission:</strong>{" "}
         {formatCurrency(formData.commission)}
       </p>
-      {/* <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
-        <strong className="mr-3">Property value:</strong>{" "}
-        {formatCurrency(formData.priceValue)}
-      </p> */}
-      <p className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2 capitalize">
+      <p className="text-[16px] sm:text-[28px] font-semibold mb-4  w-full bg-grey py-3 px-2 capitalize">
         <strong className="mr-3">Property Type:</strong> {formData.propertyType}
       </p>
-      <h2 className="text-[20px] font-semibold mb-4  w-full bg-grey py-3 px-2">
+      <h2 className="text-[16px] sm:text-[28px] font-semibold mb-4  w-full bg-grey py-3 px-2">
         Uploaded Files:
       </h2>
       <ul className="mt-2">

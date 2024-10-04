@@ -130,7 +130,7 @@ const Signup = () => {
           </div>
         </div>
         <div className="rounded-l-[30px] w-full md:w-[70%] p-[30px] md:p-[100px] h-full">
-          <h1 className="leading-[72px] font-bold text-[48px]">
+          <h1 className="leading-[72px] font-bold text-[26px] sm:text-[48px]">
             Create Account
           </h1>
 

@@ -59,23 +59,20 @@ export const badges = [
   {
     id: "exp",
     icon: LuThumbsUp,
-    title: "Experience",
-    text: `Lorem ipsum dolor sit amet, consectetur 
-            adipisng elit. Sed do eiusmod tempor.`,
+    title: "Fee Standardization",
+    text: `Snyclexs enforces NBA's fee standards, preventing undercharging while allowing lawyers to set higher rates based on their value. This ensures fair compensation and preserves lawyer autonomy.`,
   },
   {
     id: "support",
     icon: MdOutlineSupportAgent,
-    title: "24/7 Support",
-    text: `Lorem ipsum dolor sit amet, consectetur 
-            adipisng elit. Sed do eiusmod tempor.`,
+    title: "Yynergy with NBA",
+    text: `Snyclexs, in partnership with the NBA, protects lawyers from undervaluation,akin to pricing controls in other industries, ensuring fair compensation despiteeconomic pressures.`,
   },
   {
     id: "cert",
     icon: GrCertificate,
-    title: "Certified",
-    text: `Lorem ipsum dolor sit amet, consectetur 
-            adipisng elit. Sed do eiusmod tempor.`,
+    title: "Market Impact",
+    text: `Snyclexs, in partnership with the NBA, protects lawyers from undervaluation, akin to pricing controls other industries, ensuring fair compensation despite economic pressures.`,
   },
 ];
 

@@ -30,3 +30,29 @@ export function formatISODate(
   return date.toLocaleDateString("en-US", options);
 }
 
+
+export const calculateCommission = (price, transactionType) => {
+  let commission = 0;
+
+  if (transactionType === "Mortgage") {
+    if (price < 50000000) {
+      commission = price * 0.04; // 4% for properties < ₦50m
+    } else if (price >= 50000000 && price <= 100000000) {
+      commission = 2000000 + (price - 50000000) * 0.03; // ₦2m + 3% for excess
+    } else if (price > 100000000) {
+      commission = 4500000 + (price - 100000000) * 0.02; // ₦4.5m + 2% for excess
+    }
+  } else {
+    // Conveyance transactions
+    if (price < 50000000) {
+      commission = price * 0.1; // 10% for properties < ₦50m
+    } else if (price >= 50000000 && price <= 100000000) {
+      commission = 5000000 + (price - 50000000) * 0.05; // ₦5m + 5% for excess
+    } else if (price > 100000000) {
+      commission = 7500000 + (price - 100000000) * 0.02; // ₦7.5m + 2% for excess
+    }
+  }
+
+  return commission;
+};
+

@@ -43,7 +43,10 @@ const Homepage = () => {
         ))}
       </section>
 
-      <section id="about" className="w-[90%] h-auto mx-auto flex flex-col md:flex-row justify-center items-center mt-16">
+      <section
+        id="about"
+        className="w-[90%] h-auto mx-auto flex flex-col md:flex-row justify-center items-center mt-16"
+      >
         <div className="w-full md:w-[55%] flex flex-col md:flex-row justify-center items-center bg-alternate">
           <div className="w-full md:w-[25%] h-[600px]">
             <img
@@ -57,17 +60,22 @@ const Homepage = () => {
               About Us
             </h1>
             <p className="text-[15px] font-medium leading-[22.5px] mb-16">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nis ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum
+              The legal profession, particularly in the property market, often
+              struggles withlow bargaining power, leading to financial
+              disparities. Snyclexs addresses thisby providing a platform that
+              equips lawyers with the tools they need to securefair
+              compensation, in alignment with the Legal Practitioners
+              RemunerationOrder. This strategic approach ensures that lawyers
+              can better navigatemarket challenges and maintain financial
+              integrity.
             </p>
             <p className="text-[15px] font-medium leading-[22.5px] mb-16">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempo incididunt ut labore et dolore magna aliqua
+              Through its collaboration with the Nigerian Bar Association
+              (NBA),Snyclexs provides a vital solution to recover a potential
+              ₦10.287 trillion(or $6.429 billion), representing 70% of the value
+              currently lost in theproperty market. This alliance ensures that
+              lawyers can reclaim thissignificant value and secure their
+              rightful earnings.
             </p>
           </div>
         </div>
@@ -75,11 +83,6 @@ const Homepage = () => {
           <h1 className="font-semibold text-[26px] leading-[39px] mb-2 md:mb-14">
             Why Choose us
           </h1>
-          <p className="font-medium text-[15px] leading-[22.5px]  mb-6 md:mb-14">
-            Lorem ipsum dolor sit amet, consectetur adipisng elit. Sed do
-            eiusmod tempor incididunt ut laboreet dolore magna aliqua
-          </p>
-
           <div>
             {badges.map((badge) => (
               <div
@@ -103,7 +106,10 @@ const Homepage = () => {
         </div>
       </section>
 
-      <section id="partners" className="w-[90%] h-auto mx-auto flex flex-col md:flex-row justify-between items-center mt-16">
+      <section
+        id="partners"
+        className="w-[90%] h-auto mx-auto flex flex-col md:flex-row justify-between items-center mt-16"
+      >
         <div className="w-full md:w-[30%]">
           <h1 className="text-[26px] font-bold leading-[75px] mb-2">
             Our partners
@@ -126,7 +132,10 @@ const Homepage = () => {
         </div>
       </section>
 
-      <section id="services" className="w-full h-auto bg-servicebg bg-no-repeat bg-cover bg-top mt-10 relative">
+      <section
+        id="services"
+        className="w-full h-auto bg-servicebg bg-no-repeat bg-cover bg-top mt-10 relative"
+      >
         <div className="absolute w-full h-full bg-alternate opacity-50"></div>
         <div className="w-[90%] mx-auto pt-20 pb-28 text-white relative z-10 ">
           <h1 className="text-[55px] font-bold leading-[75px] mb-12">

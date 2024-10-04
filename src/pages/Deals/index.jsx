@@ -54,8 +54,8 @@ const Deals = () => {
                   aria-label={`View details of deal ${deal.location}`}
                 >
                   <div className="bg-grey border-b-2 border-black px-5 py-3 flex justify-between items-center hover:bg-primary transition duration-200">
-                    <p className="text-[15px] font-medium">{deal.location}</p>
-                    <p className="text-[14px] text-gray-600">{deal.id}</p>
+                    <p className="text-[12px] sm:text-[15px] font-medium">{deal.location}</p>
+                    <p className="text-[12px] sm:text-[14px] text-gray-600">{deal.id}</p>
                   </div>
                 </Link>
               ))

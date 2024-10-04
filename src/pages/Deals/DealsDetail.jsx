@@ -45,36 +45,36 @@ const DealsDetail = () => {
   return (
     <Helmet title="Deal Details">
       <section className="w-[90%] h-[90vh] mx-auto mt-16">
-        <h1 className="text-[32px] font-semibold leading-[48px] mb-6 ">
+        <h1 className="text-[26px] sm:text-[32px] font-semibold leading-[48px] mb-6 ">
           Deal details
         </h1>
         <div className="mt-6">
-          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
+          <p className="text-[16px] sm:text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
             <strong className="mr-3">ID:</strong> {deal.id}
           </p>
-          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
+          <p className="text-[16px] sm:text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
             <strong className="mr-3">Location:</strong> {deal.location}
           </p>
-          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
+          <p className="text-[16px] sm:text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
             <strong className="mr-3">Transaction type:</strong> {deal.deal_type}
           </p>
-          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
+          <p className="text-[16px] sm:text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
             <strong className="mr-3">Property value:</strong>{" "}
             {formatCurrency(deal.property_value)}
           </p>
-          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
+          <p className="text-[16px] sm:text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2">
             <strong className="mr-3">Commission:</strong>{" "}
-            {formatCurrency(deal.commission)}
+            {formatCurrency(deal.commission.amount)}
           </p>
-          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2 capitalize">
+          <p className="text-[16px] sm:text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2 capitalize">
             <strong className="mr-3">Property Type:</strong>{" "}
             {deal.property_type}
           </p>
-          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2 capitalize">
+          <p className="text-[16px] sm:text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2 capitalize">
             <strong className="mr-3">Date Created:</strong>{" "}
             {formatISODate(deal.created_at)}
           </p>
-          <p className="text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2 capitalize">
+          <p className="text-[16px] sm:text-[20px] font-semibold mb-4 w-full bg-grey py-3 px-2 capitalize">
             <strong className="mr-3">Deal Status:</strong> {deal.deal_status}
           </p>
         </div>
