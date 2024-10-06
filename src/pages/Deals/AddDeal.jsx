@@ -11,23 +11,11 @@ import {
 } from "../../utilityFunctions/functions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { options, options2 } from "../../constants";
 
 const CREATE_DEAL = "deals/";
 
-const options = [
-  { value: "Kosofe", label: "Kosofe" },
-  { value: "Alimosho", label: "Alimosho" },
-  { value: "Ikorodu", label: "Ikorodu" },
-];
 
-const options2 = [
-  {
-    id: "conveyancing",
-    value: "Conveyancing & Assignments",
-    label: "Conveyancing & Assignments",
-  },
-  { id: "mortgage", value: "Mortgage", label: "Mortgage" },
-];
 
 const propertyTypes = [
   { value: "commercial", label: "Commercial" },
@@ -316,7 +304,7 @@ const Step1 = ({
         <Select
           options={options2}
           styles={customStyles}
-          placeholder="Transaction"
+          placeholder="Transaction type"
           components={{ DropdownIndicator: CustomDropdownIndicator }}
           onChange={handleTransactionChange}
         />

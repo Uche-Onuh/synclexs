@@ -157,3 +157,36 @@ export const deals = [
   { id: "1590876547", location: "Kosofe" },
   { id: "1590876548", location: "Lagos Island" },
 ];
+
+
+export const options = [
+  { value: "Agege", label: "Agege" },
+  { value: " Alimosho", label: " Alimosho" },
+  { value: "Apapa", label: "Apapa" },
+  { value: "Ifako-Ijaye", label: "Ifako-Ijaye" },
+  { value: "Ikeja", label: "Ikeja" },
+  { value: "Kosofe", label: "Kosofe" },
+  { value: "Mushin", label: "Mushin" },
+  { value: "Oshodi-Isolo", label: "Oshodi-Isolo" },
+  { value: "Shomolu", label: "Shomolu" },
+  { value: "Eti-Osa", label: "Eti-Osa" },
+  { value: "Lagos Island", label: "Lagos Island" },
+  { value: "Lagos Mainland", label: "Lagos Mainland" },
+  { value: "Surulere", label: "Surulere" },
+  { value: "Ojo", label: "Ojo" },
+  { value: "Ajeromi-Ifelodun", label: "Ajeromi-Ifelodun" },
+  { value: "Amuwo-Odofin", label: "Amuwo-Odofin" },
+  { value: "Badagry", label: "Badagry" },
+  { value: "Ikorodu", label: "Ikorodu" },
+  { value: "Ibeju-Lekki", label: "Ibeju-Lekki" },
+  { value: "Epe", label: "Epe" },
+];
+
+export const options2 = [
+  {
+    id: "conveyancing",
+    value: "Conveyancing & Assignments",
+    label: "Conveyancing & Assignments",
+  },
+  { id: "mortgage", value: "Mortgage", label: "Mortgage" },
+];
