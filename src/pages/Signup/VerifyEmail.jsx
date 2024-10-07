@@ -95,6 +95,7 @@ const VerifyEmail = () => {
 
         const token = response.data.token.access;
         const id = response.data.user_id;
+        const isLawyer = response.data.is_lawyer;
 
         dispatch(
           login({
@@ -104,7 +105,6 @@ const VerifyEmail = () => {
             isLawyer,
           })
         );
-
         toast.success("Verification successful, redirecting to homepage");
 
         setTimeout(() => {

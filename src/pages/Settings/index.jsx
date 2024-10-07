@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Helmet } from "../../components";
+import { Helmet, LoadingSpinner } from "../../components";
 import { profile } from "../../assets";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
@@ -31,6 +31,7 @@ const Settings = () => {
     email: "",
     phone_number: "",
     address: "",
+    roll_number: "",
   });
 
   // Fetch the user's data when the component mounts
@@ -148,6 +149,7 @@ const Settings = () => {
     formData.append("address", formValues.address);
     formData.append("first_name", formValues.firstName);
     formData.append("last_name", formValues.lastName);
+    formData.append("roll_number", formValues.roll_number);
 
     // Append profile image file
     if (profileImageFile) {
@@ -171,10 +173,10 @@ const Settings = () => {
       });
       setLoading(false);
       console.log("Success:", response.data);
-      toast.success("Documents Successfully Uploaded");
+      toast.success("Lawyer Registered Succesfully");
       dispatch(login(isLawyer === true));
       setTimeout(() => {
-        navigate("/user/profile");
+        navigate("/user/deals");
       }, 3000);
     } catch (error) {
       setLoading(false);
@@ -229,6 +231,7 @@ const Settings = () => {
                 "email",
                 "phone_number",
                 "address",
+                "roll_number",
               ].map((field) => (
                 <div
                   key={field}
@@ -246,7 +249,9 @@ const Settings = () => {
                       ? "Email Address"
                       : field === "address"
                       ? "Home Address"
-                      : "Mobile Number"}
+                      : field === "phone_number"
+                      ? "Mobile Number"
+                      : "Roll Number"}
                   </label>
                   <input
                     type={field === "email" ? "email" : "text"}
