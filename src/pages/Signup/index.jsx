@@ -5,6 +5,7 @@ import { blob, logoblack } from "../../assets";
 import { toast } from "react-toastify";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "../../api/axios";
+import { calculatePasswordStrength } from "../../utilityFunctions/functions";
 
 const REGISTER_URL = "auth/users/";
 
@@ -251,13 +252,20 @@ const Signup = () => {
               )}
             </div>
 
+            {formValues.password.length > 0 && (
+              <div className="text-gray-500 text-sm mb-4">
+                Password Strength:{" "}
+                {calculatePasswordStrength(formValues.password)}
+              </div>
+            )}
+
             <div className="flex flex-col gap-1">
               <button
                 disabled={isLoading === true}
                 type="submit"
                 className="bg-[#003574] py-2 rounded-[10px] outline-none border-none hover:bg-primary text-secondary hover:text-tertiary font-bold text-[24px] transition  ease-in-out duration-700"
               >
-                Create Account
+                {isLoading ? "Loading..." : "Create Account"}
               </button>
             </div>
           </form>

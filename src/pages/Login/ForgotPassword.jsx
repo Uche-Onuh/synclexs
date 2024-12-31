@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Helmet } from "../../components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { blob, logoblack } from "../../assets";
 import { toast } from "react-toastify";
+import axios from "../../api/axios";
+
+const PASSWORD_URL = "auth/password-reset-request/";
 
 const ForgortPassword = () => {
-  const navigate = useNavigate();
   // State for form values and errors
   const [formValues, setFormValues] = useState({
     email: "",
   });
-
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   // Handle input change and remove error
@@ -42,22 +44,35 @@ const ForgortPassword = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (validate()) {
-      // If form is valid, you can proceed with form submission
-      toast.success(
-        "A link has been sent to your email. Follow the link to reset your password"
-      );
+      const { email } = formValues;
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          PASSWORD_URL,
+          JSON.stringify({ email }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      setTimeout(() => {
-        navigate("/auth/reset-password");
-      }, 3000);
-      console.log("Form submitted successfully:", formValues);
+        setLoading(false);
+        toast.success(
+          "A link has been sent to your email. Follow the link to reset your password"
+        );
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            "Something went wrong. Please try again."
+        );
+      }
     } else {
+      setloading(false);
       toast.error("Validation failed. Please fix the errors and try again.");
-      console.log("Validation failed. Please fix the errors and try again.");
     }
   };
 
@@ -102,9 +117,10 @@ const ForgortPassword = () => {
             <div className="flex flex-col gap-1">
               <button
                 type="submit"
+                disabled={loading}
                 className="bg-[#003574] py-2 rounded-[10px] outline-none border-none hover:bg-primary text-secondary hover:text-tertiary font-bold text-[24px] transition  ease-in-out duration-700"
               >
-                Reset Password
+                {loading ? "Loading..." : "Reset Password"}
               </button>
             </div>
           </form>

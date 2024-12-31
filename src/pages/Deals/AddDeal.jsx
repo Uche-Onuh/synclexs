@@ -15,8 +15,6 @@ import { options, options2 } from "../../constants";
 
 const CREATE_DEAL = "deals/";
 
-
-
 const propertyTypes = [
   { value: "commercial", label: "Commercial" },
   { value: "residential", label: "Residential" },
@@ -214,7 +212,7 @@ const AddDeal = () => {
       console.log("Deal submitted successfully:", response.data);
       toast.success("Deal successfully created, Redirecting to payment");
       setTimeout(() => {
-        navigate("/payment");
+        navigate("/user/deals");
       }, 3000);
     } catch (error) {
       setLoading(false);

@@ -3,17 +3,26 @@ import { Helmet } from "../../components";
 import { blob, logoblack } from "../../assets";
 import { toast } from "react-toastify";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
+import { calculatePasswordStrength } from "../../utilityFunctions/functions";
+
+const RESET_PASSWORD_URL = "auth/password-reset/";
 
 const ResetPassword = () => {
   // State for form values and errors
   const [formValues, setFormValues] = useState({
     password: "",
-    confPassword: "",
+    confirm_password: "",
   });
+
+  const navigate = useNavigate();
+
+  const { token } = useParams();
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   // Handle input change and remove error
   const handleChange = (e) => {
@@ -38,10 +47,10 @@ const ResetPassword = () => {
       newErrors.password = "Password must be at least 6 characters";
     }
 
-    if (!formValues.confPassword) {
-      newErrors.confPassword = "Please confirm your password";
-    } else if (formValues.confPassword !== formValues.password) {
-      newErrors.confPassword = "Passwords do not match";
+    if (!formValues.confirm_password) {
+      newErrors.confirm_password = "Please confirm your password";
+    } else if (formValues.confirm_password !== formValues.password) {
+      newErrors.confirm_password = "Passwords do not match";
     }
 
     setErrors(newErrors);
@@ -55,13 +64,34 @@ const ResetPassword = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validate()) {
       // If form is valid, you can proceed with form submission
-      toast.success("Form submitted successfully");
-      console.log("Form submitted successfully:", formValues);
+      const { password, confirm_password } = formValues;
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          RESET_PASSWORD_URL,
+          JSON.stringify({ token, password, confirm_password }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        setLoading(false);
+        toast.success("Password reset successfully");
+
+        setTimeout(() => navigate("/auth/signup"), 3000);
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            "Something went wrong. Please try again."
+        );
+      }
     } else {
       toast.error("Validation failed. Please fix the errors and try again.");
       console.log("Validation failed. Please fix the errors and try again.");
@@ -113,15 +143,15 @@ const ResetPassword = () => {
 
             <div className="flex flex-col border-[1px] border-[#2A2B2C] rounded-[10px] relative h-[50px] w-full mb-11">
               <label
-                htmlFor="confPassword"
+                htmlFor="confirm_password"
                 className="absolute top-[-15px] left-10 font-medium text-[20px] leading-[30px] px-[5px] bg-white"
               >
                 Confirm Password
               </label>
               <input
                 type={showPassword ? "text" : "password"}
-                id="confPassword"
-                value={formValues.confPassword}
+                id="confirm_password"
+                value={formValues.confirm_password}
                 onChange={handleChange}
                 className="bg-transparent h-[50px] focus:outline-none w-full px-[30px]"
               />
@@ -131,19 +161,27 @@ const ResetPassword = () => {
               >
                 {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
               </div>
-              {errors.confPassword && (
+              {errors.confirm_password && (
                 <span className="text-red-500 text-sm font-semibold">
-                  {errors.confPassword}
+                  {errors.confirm_password}
                 </span>
               )}
             </div>
 
+            {formValues.password.length > 0 && (
+              <div className="text-gray-500 text-sm">
+                Password Strength:{" "}
+                {calculatePasswordStrength(formValues.password)}
+              </div>
+            )}
+
             <div className="flex flex-col gap-1">
               <button
                 type="submit"
+                disabled={loading}
                 className="bg-[#003574] py-2 rounded-[10px] outline-none border-none hover:bg-primary text-secondary hover:text-tertiary font-bold text-[24px] transition  ease-in-out duration-700"
               >
-                Change Password
+                {loading ? "Loading" : "Change Password"}
               </button>
             </div>
           </form>

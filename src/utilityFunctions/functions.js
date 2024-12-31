@@ -56,3 +56,11 @@ export const calculateCommission = (price, transactionType) => {
   return commission;
 };
 
+export const calculatePasswordStrength = (password) => {
+  if (password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password)) {
+    return "Strong";
+  } else if (password.length >= 6) {
+    return "Moderate";
+  }
+  return "Weak";
+};

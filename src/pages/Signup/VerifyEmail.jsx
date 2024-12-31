@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "../../components";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { blob, logoblack } from "../../assets";
@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../../redux/slice/userSlice";
 
 const VERIFY_EMAIL = "auth/verify-email/"; // Ideally, this URL should be managed via environment variables
+const REGENERATE_CODE = "auth/verify-email/";
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
@@ -18,7 +19,19 @@ const VerifyEmail = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setisLoading] = useState(false);
 
+  const [timer, setTimer] = useState(600);
+  const [isResendDisabled, setIsResendDisabled] = useState(true);
+
   const dispatch = useDispatch();
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
+  };
 
   // Handle input change and remove error
   const handleChange = (index, e) => {
@@ -125,6 +138,43 @@ const VerifyEmail = () => {
     }
   };
 
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+      return () => clearInterval(interval); // Cleanup on unmount
+    } else {
+      setIsResendDisabled(false);
+    }
+  }, [timer]);
+
+  const regenerateCode = async (e) => {
+    e.preventDefault();
+    setIsResendDisabled(true);
+    setTimer(600); // Reset timer
+    try {
+      const response = await axios.post(
+        REGENERATE_CODE,
+        JSON.stringify({
+          email,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      toast.success("Verification code resent");
+    } catch (error) {
+      // Error handling
+      setisLoading(false);
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
+    }
+  };
+
   const maskedEmail = maskEmail(email);
 
   return (
@@ -178,11 +228,7 @@ const VerifyEmail = () => {
                 type="submit"
                 className="bg-[#003574] py-2 rounded-[10px] outline-none border-none hover:bg-primary text-secondary hover:text-tertiary font-bold text-[24px] transition  ease-in-out duration-700"
               >
-                {isLoading ? (
-                  <span className="spinner">Loading...</span>
-                ) : (
-                  "Verify"
-                )}
+                {isLoading ? "Loading..." : "Verify Account"}
               </button>
             </div>
           </form>
@@ -190,12 +236,23 @@ const VerifyEmail = () => {
           <div>
             <h1 className="font-medium text-[20px] leading-[30px]">
               Didn’t get a code?{" "}
-              <Link to="#" className="text-primary hover:text-tertiary ">
+              <button
+                to="#"
+                className="text-primary hover:text-tertiary "
+                onClick={regenerateCode}
+                disabled={isResendDisabled}
+              >
                 Resend code
-              </Link>
+              </button>
             </h1>
           </div>
+
+          <p className="text-gray-600 mt-5 text-center ">
+            Resend available in{" "}
+            <span className="font-bold">{formatTime(timer)}</span>
+          </p>
         </div>
+
         <div className="absolute right-20 bottom-10">
           <Link to="/">
             <img
