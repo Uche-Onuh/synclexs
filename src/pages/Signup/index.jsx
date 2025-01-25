@@ -254,8 +254,31 @@ const Signup = () => {
 
             {formValues.password.length > 0 && (
               <div className="text-gray-500 text-sm mb-4">
-                Password Strength:{" "}
-                {calculatePasswordStrength(formValues.password)}
+                <p className="mb-1">
+                  Password must:
+                  <ul className="list-disc list-inside">
+                    <li>Include at least one uppercase letter</li>
+                    <li>Include at least one symbol (e.g., @, $, !, etc.)</li>
+                    <li>Include at least one number</li>
+                    <li>Be at least 8 characters long</li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Password Strength:</strong>{" "}
+                  <span
+                    className={`${
+                      calculatePasswordStrength(formValues.password) ===
+                      "Strong"
+                        ? "text-green-500"
+                        : calculatePasswordStrength(formValues.password) ===
+                          "Medium"
+                        ? "text-yellow-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {calculatePasswordStrength(formValues.password)}
+                  </span>
+                </p>
               </div>
             )}
 

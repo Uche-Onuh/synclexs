@@ -31,7 +31,7 @@ export const navLinks = [
 export const cards = [
   {
     id: "innovation",
-    title: "Innovation",
+    title: "Efficient Workflow Management",
     text: `Lorem ipsum dolor sit amet, 
             consectetur adipiscing elit`,
     icon: FaRegLightbulb,
@@ -39,7 +39,7 @@ export const cards = [
   },
   {
     id: "secure",
-    title: "Secure deals",
+    title: "Secure Transaction Processing",
     text: `Lorem ipsum dolor sit amet, 
             consectetur adipiscing elit`,
     icon: GrSecure,
@@ -47,7 +47,7 @@ export const cards = [
   },
   {
     id: "top",
-    title: "Top Services",
+    title: "Timely Updates and Notifications",
     text: `Lorem ipsum dolor sit amet, 
             consectetur adipiscing elit`,
     icon: IoMdCheckmarkCircleOutline,
@@ -65,7 +65,7 @@ export const badges = [
   {
     id: "support",
     icon: MdOutlineSupportAgent,
-    title: "Yynergy with NBA",
+    title: "Synergy with NBA",
     text: `Snyclexs, in partnership with the NBA, protects lawyers from undervaluation,akin to pricing controls in other industries, ensuring fair compensation despiteeconomic pressures.`,
   },
   {
@@ -96,8 +96,7 @@ export const steps = [
     id: "step1",
     head: "Step 1",
     title: "Locate",
-    text: `Lorem ipsum dolor sit amet,
-          consectetur adipisng elit.`,
+    text: `Snyclexs enforces NBA's fee standards, preventing undercharging while allowing lawyers to set higher rates based on their value. This ensures fair compensation and preserves lawyer autonomy.`,
     icon: CiLocationOn,
     bg: "bg-grey",
     textCol: "text-black",
@@ -106,8 +105,7 @@ export const steps = [
     id: "step2",
     head: "Step 2",
     title: "Estimate",
-    text: `Lorem ipsum dolor sit amet,
-          consectetur adipisng elit.`,
+    text: `Snyclexs, in partnership with the NBA, protects lawyers from undervaluation, akin to pricing controls in other industries. This approach ensures fair compensation despite economic pressures.`,
     icon: RiContractLine,
     bg: "bg-alternate",
     textCol: "text-white",
@@ -116,8 +114,7 @@ export const steps = [
     id: "step3",
     head: "Step 3",
     title: "Deal",
-    text: `Lorem ipsum dolor sit amet,
-          consectetur adipisng elit.`,
+    text: `Through strategic partnerships with the NBA, Snyclexs safeguards lawyers against undervaluation. This pricing model ensures competitive and fair compensation while maintaining the integrity of the legal industry.`,
     icon: PiHandshakeThin,
     bg: "bg-grey",
     textCol: "text-black",
@@ -127,28 +124,21 @@ export const steps = [
 export const faqs = [
   {
     id: "q1",
-    question: "What services does TanahAir Offer?",
-    reply: "This is a default reply",
+    question: "What is Snyclexs?",
+    reply:
+      "Snyclexs is a cutting-edge platform designed to streamline transaction management for lawyers",
   },
   {
     id: "q2",
-    question: "What services does TanahAir Offer?",
-    reply: "This is a default reply",
+    question: "How secure is Snyclexs?",
+    reply:
+      " Snyclexs employs robust security measures, including encryption and two-factor authentication, to protect sensitive information.",
   },
   {
     id: "q3",
-    question: "What services does TanahAir Offer?",
-    reply: "This is a default reply",
-  },
-  {
-    id: "q4",
-    question: "What services does TanahAir Offer?",
-    reply: "This is a default reply",
-  },
-  {
-    id: "q5",
-    question: "What services does TanahAir Offer?",
-    reply: "This is a default reply",
+    question: "Can I customize the platform to suit my firm's needs?",
+    reply:
+      " Yes, Snyclexs offers customization options to accommodate the unique needs of your firm.",
   },
 ];
 
@@ -157,7 +147,6 @@ export const deals = [
   { id: "1590876547", location: "Kosofe" },
   { id: "1590876548", location: "Lagos Island" },
 ];
-
 
 export const options = [
   { value: "Agege", label: "Agege" },

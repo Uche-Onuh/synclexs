@@ -7,7 +7,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 import { calculatePasswordStrength } from "../../utilityFunctions/functions";
 
-const RESET_PASSWORD_URL = "auth/password-reset/";
+const RESET_PASSWORD_URL = "auth/password-reset";
 
 const ResetPassword = () => {
   // State for form values and errors
@@ -73,8 +73,8 @@ const ResetPassword = () => {
       try {
         setLoading(true);
         const response = await axios.post(
-          RESET_PASSWORD_URL,
-          JSON.stringify({ token, password, confirm_password }),
+          `${RESET_PASSWORD_URL}/${token}/`,
+          JSON.stringify({ password, confirm_password }),
           {
             headers: {
               "Content-Type": "application/json",
@@ -85,8 +85,9 @@ const ResetPassword = () => {
         setLoading(false);
         toast.success("Password reset successfully");
 
-        setTimeout(() => navigate("/auth/signup"), 3000);
+        setTimeout(() => navigate("/auth/login"), 3000);
       } catch (error) {
+        setLoading(false);
         toast.error(
           error.response?.data?.message ||
             "Something went wrong. Please try again."

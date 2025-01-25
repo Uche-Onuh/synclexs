@@ -17,16 +17,18 @@ const Homepage = () => {
       <section className="w-full h-[75vh] bg-herobg bg-cover bg-no-repeat bg-center relative">
         <div className="bg-black opacity-50 absolute h-full w-full"></div>
         <div className="absolute top-[25%] md:left-[50px] px-10">
-          <h1 className="text-[30px] md:text-[50px] font-bold max-w-[100%] md:max-w-[40%] mb-10 text-primary">
-            "Sealing Property Deals with Legal Precision."
+          <h1 className="text-[30px] md:text-[50px] font-bold max-w-[100%] md:max-w-[40%] mb-5 text-primary">
+            "Transforming Legal Operations with Snyclexs"
           </h1>
+
+          <p className="font-medium text-[20px] md:text-[25px] md:max-w-[85%] text-secondary mb-5">
+            Streamline Transaction Management, Enhance Productivity, and Secure
+            Payments
+          </p>
           <p className="font-medium text-[14px] md:text-[16px] md:max-w-[85%] text-secondary">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
-            nobis voluptates iure, odit recusandae similique quod veritatis
-            tempore quidem distinctio, voluptatibus voluptas, et unde omnis
-            tenetur nulla consectetur? Pariatur eveniet sapiente laudantium
-            enim. Dolorum illum maiores, soluta ullam labore libero ratione
-            aliquam, id, nulla molestias quidem. In impedit quaerat sit.
+            Welcome to Snyclexs, your trusted partner in optimizing legal
+            operations. Our innovative platform simplifies transactional
+            processes, empowering lawyers to focus on high-value tasks.
           </p>
         </div>
       </section>
@@ -106,7 +108,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      <section
+      {/* <section
         id="partners"
         className="w-[90%] h-auto mx-auto flex flex-col md:flex-row justify-between items-center mt-16"
       >
@@ -130,7 +132,7 @@ const Homepage = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       <section
         id="services"
@@ -142,12 +144,12 @@ const Homepage = () => {
             Our Services
           </h1>
           <p className="font-medium text-[15px] leading-[22.5px] mb-14 max-w-full md:max-w-[40%]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod temporincididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nis ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. et dolore magna aliqua.
+            Our platform offers a comprehensive solution for legal professionals
+            and firms, integrating Lawyer Registration and Management,
+            Transaction Management and Tracking, Secure Payment Processing, and
+            Document Verification and Compliance to streamline operations,
+            ensure accuracy, and enhance client trust through robust security
+            and regulatory adherence.
           </p>
 
           <Link
@@ -164,10 +166,10 @@ const Homepage = () => {
           <h1 className="text-[25px] md:text-[55px] font-bold leading-[75px] mb-6">
             Our Working Process
           </h1>
-          <p className="font-medium text-[15px] leading-[22.5px] mb-2 md:mb-14 max-w-full md:max-w-[25%] mx-auto ">
+          {/* <p className="font-medium text-[15px] leading-[22.5px] mb-2 md:mb-14 max-w-full md:max-w-[25%] mx-auto ">
             Lorem ipsum dolor sit amet, consectetur adipisng elit. Sed do
             eiusmod tempor.
-          </p>
+          </p> */}
         </div>
 
         <div className="flex justify-between items-center flex-col md:flex-row gap-20 md:gap-4 mt-20">
