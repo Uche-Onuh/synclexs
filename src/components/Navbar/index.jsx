@@ -156,7 +156,8 @@ const Navbar = () => {
         <div
           id="mobile-menu"
           className={classNames(
-            "transform transition-transform duration-300 ease-in-out absolute top-[100%] left-[-230%] bg-white z-10 origin-top w-[250px]",
+            "transform transition-transform duration-300 ease-in-out absolute top-[100%]  bg-white z-10 origin-top w-[250px]",
+            isLoggedIn ? "left-[-230%]" : "left-[-130%]",
             open
               ? "scale-100 opacity-100"
               : "scale-0 opacity-0 pointer-events-none"
