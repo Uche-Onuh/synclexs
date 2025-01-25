@@ -26,6 +26,11 @@ export const navLinks = [
     path: "/#faqs",
     display: "FAQs",
   },
+  {
+    id: "contact & support",
+    path: "/contact&support",
+    display: "Contact & Support",
+  },
 ];
 
 export const cards = [

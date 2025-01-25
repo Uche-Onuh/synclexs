@@ -12,6 +12,8 @@ import {
   AddDeal,
   Profile,
   Editprofile,
+  Terms,
+  Contact,
 } from "../pages";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoutes";
@@ -20,6 +22,8 @@ const Routers = () => {
   return (
     <Routes>
       <Route path="/" index element={<Homepage />} />
+      <Route path="/TOS" element={<Terms />} />
+      <Route path="/contact&support" element={<Contact />} />
 
       <Route path="/*" element={<ProtectedRoute />}>
         <Route path="user/register" element={<Settings />} />

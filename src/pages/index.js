@@ -11,6 +11,8 @@ import DealsDetail from "./Deals/DealsDetail";
 import AddDeal from "./Deals/AddDeal";
 import Profile from "./Profile";
 import Editprofile from "./Profile/editProfile";
+import Terms from "./TOS";
+import Contact from "./Contact";
 
 export {
   Login,
@@ -25,4 +27,6 @@ export {
   AddDeal,
   Profile,
   Editprofile,
+  Terms,
+  Contact,
 };

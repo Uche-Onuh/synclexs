@@ -10,7 +10,13 @@ const Footer = () => {
   return (
     <div className="text-white py-2 w-[90%] mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-center ">
-        <h1> Copyright © {currentYear} Synclexs. All rights reserved.</h1>
+        <h1>
+          {" "}
+          Copyright © {currentYear} Synclexs. All rights reserved. |{" "}
+          <Link to="/TOS" className="text-primary">
+            Terms of Service
+          </Link>{" "}
+        </h1>
         <div className="flex justify-center items-center gap-5">
           <div className="text-white text-[20px]">
             <p>Follow:</p>

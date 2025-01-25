@@ -6,4 +6,4 @@ import Cards from "./UI/Cards";
 import Steps from "./UI/Steps";
 import LoadingSpinner from "./UI/LoadingSpinner";
 
-export { Navbar, Footer, Layout, Helmet, Cards, Steps, LoadingSpinner };
+export { Navbar, Footer, Layout, Helmet, Cards, Steps, LoadingSpinner,  };
