@@ -75,6 +75,8 @@ const AddDeal = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null);
+  // const [selectedOption2, setSelectedOption2] = useState(null);
+  // const [selectedOption3, setSelectedOption3] = useState(null);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [commission, setCommission] = useState(null);
   const [priceValue, setPriceValue] = useState(null);
@@ -237,17 +239,17 @@ const AddDeal = () => {
               selectedOption={selectedOption}
               handleTransactionChange={handleTransactionChange}
               priceValue={priceValue}
-              selectedTransaction
+              selectedTransaction={selectedTransaction}
+              propertyType={propertyType}
+              handlePropertyTypeChange={handlePropertyTypeChange}
             />
           )}
           {step === 2 && (
             <Step2
               nextStep={nextStep}
               prevStep={prevStep}
-              handlePropertyTypeChange={handlePropertyTypeChange}
               commission={commission}
               priceValue={priceValue}
-              propertyType={propertyType}
               selectedOption={selectedOption}
               uploadedFiles={uploadedFiles}
               fileInputRef={fileInputRef}
@@ -284,6 +286,8 @@ const Step1 = ({
   handlePriceChange,
   priceValue,
   selectedTransaction,
+  handlePropertyTypeChange,
+  propertyType,
 }) => (
   <>
     <h1 className="text-[18px] sm:text-[32px] font-semibold leading-[48px] mb-6">
@@ -299,19 +303,40 @@ const Step1 = ({
 
     {selectedOption && (
       <div className="my-6">
+        <h1 className="text-[24px] sm:text-[32px] font-semibold leading-[48px] mb-6">
+          Transaction Type
+        </h1>
         <Select
           options={options2}
           styles={customStyles}
-          placeholder="Transaction type"
+          placeholder="Select Transaction type"
           components={{ DropdownIndicator: CustomDropdownIndicator }}
           onChange={handleTransactionChange}
         />
       </div>
     )}
 
-    {selectedOption && (
+    {selectedTransaction && (
+      <>
+        <h1 className="text-[24px] sm:text-[32px] font-semibold leading-[48px] mb-6">
+          Property Type
+        </h1>
+        <Select
+          options={propertyTypes}
+          styles={customStyles}
+          placeholder="Select Property Type"
+          components={{ DropdownIndicator: CustomDropdownIndicator }}
+          onChange={handlePropertyTypeChange}
+        />
+      </>
+    )}
+
+    {propertyType && (
       <div className="flex flex-col mt-4 gap-3 mb-6">
-        <label htmlFor="price" className="text-[20px]">
+        <label
+          htmlFor="price"
+          className="text-[24px] sm:text-[32px] font-semibold leading-[48px]"
+        >
           Price
         </label>
         <input
@@ -339,9 +364,7 @@ const Step2 = ({
   priceValue,
   nextStep,
   prevStep,
-  handlePropertyTypeChange,
   selectedOption,
-  propertyType,
   uploadedFiles,
   getRootProps, // Receiving dropzone props
   getInputProps,
@@ -355,17 +378,6 @@ const Step2 = ({
     <h1 className="text-[24px] sm:text-[32px] font-semibold leading-[48px] mb-6">
       Deal Details
     </h1>
-    <h1 className="text-[24px] sm:text-[32px] font-semibold leading-[48px] mb-6">
-      Property Type
-    </h1>
-    <Select
-      options={propertyTypes}
-      styles={customStyles}
-      placeholder="Select Property Type"
-      components={{ DropdownIndicator: CustomDropdownIndicator }}
-      onChange={handlePropertyTypeChange}
-    />
-
     <div className="mt-10">
       <p className="font-normal text-[16px] sm:text-[28px] leading-[42px] mb-7 w-full bg-grey py-3 px-2">
         Property Value:{" "}
@@ -445,7 +457,7 @@ const Step2 = ({
       <button
         className="bg-alternate py-2 px-4 rounded-l font-normal text-[15px] leading-[22px] text-white hover:bg-primary hover:text-[#000] uppercase"
         onClick={nextStep}
-        disabled={!propertyType || uploadedFiles.length === 0}
+        disabled={uploadedFiles.length === 0}
       >
         Continue
       </button>
@@ -453,12 +465,7 @@ const Step2 = ({
   </>
 );
 
-const Step3 = ({
-  prevStep,
-  handleSubmit,
-  formData,
-  uploadedFiles,
-}) => (
+const Step3 = ({ prevStep, handleSubmit, formData, uploadedFiles }) => (
   <>
     <h1 className="text-[24px] sm:text-[32px] font-semibold leading-[48px] mb-6 ">
       Review Your Deal
