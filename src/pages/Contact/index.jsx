@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "../../api/axios";
 
+const CONTACT_URL = "auth/support/";
+
 const Contact = () => {
   const [form, setForm] = useState({
     firstName: "",
@@ -22,22 +24,29 @@ const Contact = () => {
     setLoading(true);
 
     try {
-      // Uncomment this when ready to connect to the backend
-      const response = await axios.post("http://localhost:3000/send-email", {
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.post(
+        CONTACT_URL,
+        {
+          first_name: form.firstName,
+          last_name: form.lastName,
+          email: form.email,
+          message: form.message,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      if (!response.ok) {
-        throw new Error("Failed to send message.");
-      }
-
-      const data = await response.json();
       toast.success("Message sent successfully!");
       setForm({ firstName: "", email: "", lastName: "", message: "" });
     } catch (err) {
-      toast.error("Failed to send message. Please try again.");
+      // Handle error response
+      toast.error(
+        err.response?.data?.message ||
+          "Failed to send message. Please try again."
+      );
     } finally {
       setLoading(false);
     }

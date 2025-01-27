@@ -458,9 +458,6 @@ const Step3 = ({
   handleSubmit,
   formData,
   uploadedFiles,
-  // priceValue,
-  // propertyType,
-  // commission,
 }) => (
   <>
     <h1 className="text-[24px] sm:text-[32px] font-semibold leading-[48px] mb-6 ">
